@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Majestor Partner — Tu ruta de bienvenida</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Expanded:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #fbfaf7;
+    --paper: #ffffff;
+    --line: #e9e5da;
+    --line-soft: #f1eee6;
+    --ink: #17140f;
+    --ink-soft: #55503f;
+    --ink-faint: #8a8471;
+    --gold-dark: #b88900;
+    --gold: #d4a413;
+    --gold-light: #efb810;
+    --gold-tint: #fdf6e3;
+    --red: #dc282a;
+    --red-tint: #fdeceb;
+    --sidebar-bg: #0c0a08;
+    --sidebar-bg-2: #050403;
+    --sidebar-line: #262218;
+    --sidebar-text: #cfc9ba;
+    --sidebar-text-dim: #7d7768;
+    --display: "Archivo Expanded", "Archivo", sans-serif;
+    --sans: "Archivo", sans-serif;
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --sidebar-w: 272px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--gold-dark);}
+  ::selection{background:var(--gold-light);color:#1a1400;}
+  :focus-visible{outline:2px solid var(--gold-dark); outline-offset:3px;}
+
+  h1,h2,h3,h4{font-family:var(--display); font-weight:700; margin:0; color:var(--ink);}
+  p{margin:0 0 14px 0; color:var(--ink-soft); text-align:justify; text-align-last:left;}
+  ul,ol{margin:0 0 14px 0; padding-left:22px; color:var(--ink-soft);}
+  li{margin-bottom:7px;}
+  strong{color:var(--ink); font-weight:600;}
+
+  .icn{stroke:currentColor; fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;}
+
+  /* ---------- Reveal / motion utilities ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(14px) scale(0.98);
+    transition:opacity 460ms var(--ease-out), transform 460ms var(--ease-out);
+    transition-delay:var(--d, 0ms);
+  }
+  .reveal.in-view{opacity:1; transform:translateY(0) scale(1);}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1; transform:none; transition:none;}
+  }
+
+  /* ---------- Layout shell ---------- */
+  .shell{display:flex; min-height:100vh;}
+
+  /* ---------- Sidebar (kept dark for contrast) ---------- */
+  .sidebar{
+    width:var(--sidebar-w); flex:0 0 var(--sidebar-w);
+    background:
+      repeating-linear-gradient(100deg, rgba(255,255,255,.015) 0px, rgba(255,255,255,.015) 1px, transparent 1px, transparent 34px),
+      linear-gradient(180deg, var(--sidebar-bg) 0%, var(--sidebar-bg-2) 100%);
+    border-right:1px solid var(--sidebar-line);
+    padding:34px 26px 24px;
+    position:sticky; top:0; height:100vh;
+    display:flex; flex-direction:column;
+    z-index:20;
+  }
+  .brand{display:flex; align-items:center; gap:12px; margin-bottom:6px;}
+  .brand-text{display:flex; flex-direction:column;}
+  .brand-name{font-family:var(--display); font-size:21px; font-weight:700; letter-spacing:2px; color:#fff;}
+  .brand-tag{
+    display:inline-block; margin-top:4px; font-family:var(--sans); font-weight:600;
+    font-size:12px; letter-spacing:1.2px; color:#1a1400;
+    background:linear-gradient(120deg, var(--gold-light), var(--gold));
+    padding:2px 8px; border-radius:3px; width:fit-content;
+  }
+  .brand-sub{margin:16px 0 0; font-size:13.5px; color:var(--sidebar-text-dim); letter-spacing:.4px;}
+
+  .navlist{list-style:none; margin:30px 0 0; padding:0; display:flex; flex-direction:column; gap:2px; overflow-y:auto;}
+  .navlink{
+    display:flex; align-items:center; gap:12px; width:100%; text-align:left;
+    background:none; border:none; color:var(--sidebar-text); font-family:var(--sans); font-weight:500;
+    font-size:15.5px; padding:11px 12px; border-radius:8px; cursor:pointer;
+    transition:background 160ms var(--ease-out), color 160ms var(--ease-out), transform 140ms var(--ease-out);
+  }
+  .navlink svg{flex:0 0 auto; opacity:.7;}
+  .navlink:hover{background:rgba(255,255,255,.05); color:#fff;}
+  .navlink:active{transform:scale(0.97);}
+  .navlink.active{
+    background:linear-gradient(90deg, rgba(212,164,19,.22), rgba(212,164,19,.03));
+    color:#fff; box-shadow:inset 2px 0 0 var(--gold-light);
+  }
+  .navlink.active svg{opacity:1; color:var(--gold-light);}
+
+  .sidebar-footer{margin-top:auto; padding-top:20px; border-top:1px solid var(--sidebar-line);}
+  .pil{font-size:12px; letter-spacing:2px; color:var(--gold-light); display:flex; gap:6px; align-items:center; margin-bottom:12px;}
+  .pil span:nth-child(2){color:var(--sidebar-text-dim);}
+  .support-mini{font-size:13.5px; color:var(--sidebar-text-dim); line-height:1.8;}
+  .support-mini a{color:var(--sidebar-text); text-decoration:none;}
+  .support-mini a:hover{color:var(--gold-light);}
+
+  .menu-toggle{
+    display:none; position:fixed; top:16px; right:16px; z-index:40;
+    background:var(--sidebar-bg); border:1px solid var(--sidebar-line); border-radius:8px;
+    width:42px; height:42px; align-items:center; justify-content:center; cursor:pointer;
+  }
+  .menu-toggle svg{width:20px; height:20px;}
+
+  /* ---------- Main content ---------- */
+  .main{flex:1 1 auto; min-width:0; padding:52px clamp(24px, 4vw, 64px) 100px;}
+  .panel{display:none; max-width:1180px; width:100%;}
+  .panel.active{display:block; animation:panelIn 420ms var(--ease-out);}
+  @keyframes panelIn{from{opacity:0; transform:translateY(8px) scale(0.99);} to{opacity:1; transform:translateY(0) scale(1);}}
+  @media (prefers-reduced-motion: reduce){ .panel.active{animation:none;} }
+
+  .head-row{display:flex; align-items:center; gap:14px; margin-bottom:6px;}
+  .head-icon{
+    flex:0 0 auto; width:44px; height:44px; border-radius:12px;
+    background:var(--gold-tint); border:1px solid #f1e3b8;
+    display:flex; align-items:center; justify-content:center; color:var(--gold-dark);
+  }
+  .eyebrow{font-size:13px; letter-spacing:2px; color:var(--gold-dark); font-weight:600; display:block; margin-bottom:4px;}
+  .panel h2{font-size:34px;}
+  .panel .lede{font-size:18px; color:var(--ink-soft); max-width:640px; margin-top:14px;}
+  .divider{height:1px; background:linear-gradient(90deg, var(--line), transparent); margin:32px 0;}
+
+  h3.section-h{font-size:20px; color:var(--ink); margin:36px 0 14px; display:flex; align-items:center; gap:10px;}
+  h3.section-h:first-of-type{margin-top:8px;}
+  h3.section-h .mini-icn{color:var(--gold-dark); flex:0 0 auto;}
+
+  .card{background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:20px 22px; margin-bottom:14px;}
+
+  /* ---------- Hero banner ---------- */
+  .hero-banner{
+    position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center;
+    min-height:340px; text-align:center;
+    background:radial-gradient(120% 140% at 50% 0%, #2a2110 0%, #100c05 55%, #050403 100%);
+    border-radius:18px; padding:64px 32px; margin-bottom:34px;
+    isolation:isolate;
+  }
+  .hero-graphic{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:min(640px, 92%); opacity:.14; z-index:0; pointer-events:none;
+  }
+  .hero-copy{position:relative; z-index:1; max-width:640px; margin:0 auto; display:flex; flex-direction:column; align-items:center;}
+  .hero-glow{
+    position:absolute; inset:-40% -20% auto auto; width:420px; height:420px; border-radius:50%;
+    background:radial-gradient(circle, rgba(239,184,16,.28) 0%, transparent 68%);
+    filter:blur(10px); z-index:-1;
+    animation:glowPulse 7s var(--ease-in-out) infinite;
+  }
+  @keyframes glowPulse{0%,100%{opacity:.55; transform:scale(1);} 50%{opacity:.95; transform:scale(1.08);}}
+  @media (prefers-reduced-motion: reduce){ .hero-glow{animation:none;} }
+
+  .hero-mark{display:flex; align-items:center; gap:12px; margin-bottom:26px;}
+  .hero-mark span{font-family:var(--sans); font-size:13px; letter-spacing:2px; color:var(--gold-light); font-weight:600;}
+  .hero-banner h1{color:#fff; font-size:clamp(30px, 4.2vw, 46px); line-height:1.18; margin-bottom:18px;}
+  .hero-banner p{color:#c9c2ab; font-size:18px; max-width:560px; margin:0 auto 26px; text-align:center; text-align-last:auto;}
+  .hero-chips{display:flex; flex-wrap:wrap; justify-content:center; gap:10px;}
+  .hero-chip{
+    display:flex; align-items:center; gap:8px; font-size:13.5px; color:#f1e6c2;
+    background:rgba(255,255,255,.06); border:1px solid rgba(239,184,16,.3);
+    padding:8px 13px; border-radius:20px;
+  }
+  .hero-chip svg{color:var(--gold-light); flex:0 0 auto;}
+
+  .chip-row{display:flex; flex-wrap:wrap; gap:10px; margin:16px 0 26px;}
+  .info-chip{
+    display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink-soft);
+    background:var(--paper); border:1px solid var(--line); padding:8px 13px; border-radius:20px;
+  }
+  .info-chip svg{color:var(--gold-dark); flex:0 0 auto;}
+
+  .hero-quote{margin-top:26px; padding-left:16px; border-left:2px solid var(--gold-dark); color:var(--ink-soft); font-style:italic;}
+
+  /* ---------- Stat / price chips ---------- */
+  .stat-row{display:flex; flex-wrap:wrap; gap:14px; margin:18px 0 28px;}
+  .stat-chip{
+    flex:1 1 200px; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;
+    border-radius:12px; padding:18px 20px;
+  }
+  .stat-chip.cost{background:var(--red-tint); border:1px solid #f2c6c4;}
+  .stat-chip.earn{background:var(--gold-tint); border:1px solid #f1e3b8;}
+  .stat-chip .num{font-family:var(--display); font-size:32px; font-weight:700;}
+  .stat-chip.cost .num{color:var(--red);}
+  .stat-chip.earn .num{color:var(--gold-dark);}
+  .stat-chip .unit{font-size:14px; color:var(--ink-faint);}
+  .stat-chip .desc{width:100%; font-size:13.8px; color:var(--ink-soft); margin-top:2px;}
+
+  /* ---------- Benefit grid ---------- */
+  .benefit-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:14px; margin:6px 0 28px;}
+  .benefit{
+    background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:18px 19px;
+    transition:transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out), border-color 200ms var(--ease-out);
+  }
+  @media (hover:hover) and (pointer:fine){
+    .benefit:hover{transform:translateY(-4px); box-shadow:0 16px 30px rgba(23,20,15,.07); border-color:#e3d9b8;}
+  }
+  .benefit-icon{
+    width:34px; height:34px; border-radius:9px; background:var(--gold-tint); color:var(--gold-dark);
+    display:flex; align-items:center; justify-content:center; margin-bottom:10px;
+  }
+  .benefit h4{font-size:15.5px; color:var(--ink); margin-bottom:5px;}
+  .benefit p{font-size:14.4px; margin:0;}
+
+  .not-included{background:var(--paper); border:1px dashed #d8d2c0; border-radius:12px; padding:18px 22px; margin-top:6px;}
+  .not-included h4{color:var(--ink); font-size:15.5px; margin-bottom:10px; font-family:var(--sans); font-weight:600; display:flex; align-items:center; gap:8px;}
+  .not-included ul{margin:0;}
+  .not-included li{color:var(--ink-soft); font-size:14.8px;}
+
+  /* ---------- Phase overview (Primeros pasos) ---------- */
+  .phase-overview{display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:12px; margin:20px 0 30px;}
+  .phase-card{
+    background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:16px 14px; text-align:left;
+    transition:transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+  }
+  @media (hover:hover) and (pointer:fine){ .phase-card:hover{transform:translateY(-3px); box-shadow:0 14px 26px rgba(23,20,15,.06);} }
+  .phase-card .benefit-icon{margin-bottom:12px;}
+  .phase-card h4{font-size:14.5px; margin-bottom:3px;}
+  .phase-card span{font-size:13px; color:var(--ink-faint);}
+
+  .phase-label{
+    display:flex; align-items:center; gap:9px; margin:34px 0 4px; font-family:var(--sans);
+    font-weight:600; font-size:14px; letter-spacing:.6px; color:var(--gold-dark); text-transform:uppercase;
+  }
+  .phase-label:first-of-type{margin-top:10px;}
+  .phase-label svg{flex:0 0 auto;}
+
+  /* ---------- Steps (as accordions) ---------- */
+  .steps{position:relative; margin-top:10px; padding-left:2px;}
+  details.step{
+    position:relative; margin-left:16px; border-left:1px solid var(--line);
+    padding:0 0 6px 0;
+  }
+  details.step:last-child{border-left:1px solid transparent;}
+  details.step summary{
+    list-style:none; cursor:pointer; display:flex; align-items:center; gap:14px;
+    padding:12px 0 12px 30px; position:relative;
+  }
+  details.step summary::-webkit-details-marker{display:none;}
+  .step-num{
+    position:absolute; left:-17px; top:8px; width:33px; height:33px; border-radius:50%;
+    background:var(--paper); border:1px solid var(--gold-dark); color:var(--gold-dark);
+    font-family:var(--display); font-size:14.5px; display:flex; align-items:center; justify-content:center;
+  }
+  details.step[open] .step-num{background:var(--gold-dark); color:#fff;}
+  .step-title{font-family:var(--sans); font-weight:600; font-size:16px; color:var(--ink); flex:1;}
+  .step-chevron{
+    flex:0 0 auto; color:var(--ink-faint); transition:transform 200ms var(--ease-out);
+  }
+  details.step[open] .step-chevron{transform:rotate(45deg); color:var(--gold-dark);}
+  .step-body{padding:0 0 22px 30px; font-size:15.4px; opacity:1; transition:opacity 220ms ease 40ms;}
+  details.step:not([open]) > .step-body{opacity:0; transition:opacity 140ms ease;}
+  .step-body p{font-size:15.4px; margin-bottom:8px;}
+  .step-body .mini-link{display:inline-block; margin-top:2px; font-size:14.5px; color:var(--gold-dark); word-break:break-word;}
+  .field-hint{
+    margin-top:8px; padding:10px 14px; background:var(--gold-tint); border:1px solid #f1e3b8;
+    border-left:3px solid var(--gold-dark); border-radius:6px; font-size:14.3px; color:var(--ink-soft);
+  }
+
+  /* ---------- Referral flow ---------- */
+  .flow-row{display:flex; align-items:center; gap:8px; margin:22px 0 30px; flex-wrap:wrap;}
+  .flow-step{
+    flex:1 1 160px; background:var(--paper); border:1px solid var(--line); border-radius:12px;
+    padding:18px 16px; text-align:center;
+  }
+  .flow-step .benefit-icon{margin:0 auto 10px;}
+  .flow-step h4{font-size:14.6px; margin-bottom:4px;}
+  .flow-step p{font-size:13.6px; margin:0;}
+  .flow-arrow{flex:0 0 auto; color:var(--gold-dark); display:flex; align-items:center;}
+  @media (max-width:700px){ .flow-arrow{transform:rotate(90deg);} }
+
+  /* ---------- Contact directory ---------- */
+  .directory{display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:14px; margin-top:18px;}
+  .contact-card{
+    background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:16px 18px;
+    transition:transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+  }
+  @media (hover:hover) and (pointer:fine){ .contact-card:hover{transform:translateY(-3px); box-shadow:0 14px 26px rgba(23,20,15,.06);} }
+  .contact-card .benefit-icon{margin-bottom:10px;}
+  .contact-card h4{font-size:15px; color:var(--ink); margin-bottom:5px; letter-spacing:.2px;}
+  .contact-card p{font-size:13.8px; margin:0 0 6px;}
+  .contact-card a{font-size:13.8px; display:block; text-decoration:none; color:var(--gold-dark);}
+  .contact-card a:hover{text-decoration:underline;}
+
+  .group-row{
+    display:flex; justify-content:space-between; align-items:center; gap:12px; padding:15px 18px;
+    background:var(--paper); border:1px solid var(--line); border-radius:12px; margin-bottom:10px; flex-wrap:wrap;
+  }
+  .group-row strong{font-size:15.5px;}
+  .group-row a{
+    font-size:14px; background:var(--gold-tint); color:var(--gold-dark); padding:6px 13px;
+    border-radius:20px; text-decoration:none; white-space:nowrap; font-weight:600;
+    transition:background 160ms var(--ease-out), transform 140ms var(--ease-out);
+  }
+  .group-row a:hover{background:#f5e6b0;}
+  .group-row a:active{transform:scale(0.96);}
+
+  /* ---------- FAQ ---------- */
+  .faq-cat{display:flex; align-items:center; gap:9px; margin:30px 0 12px; font-weight:600; font-size:14px; letter-spacing:.5px; color:var(--gold-dark); text-transform:uppercase;}
+  .faq-cat:first-of-type{margin-top:8px;}
+  details.faq{
+    background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:4px 20px; margin-bottom:10px;
+    transition:border-color 160ms var(--ease-out);
+  }
+  details.faq:hover{border-color:#e3d9b8;}
+  details.faq summary{
+    cursor:pointer; padding:14px 0; font-size:16px; color:var(--ink); list-style:none;
+    display:flex; justify-content:space-between; align-items:center; gap:12px; font-weight:500;
+  }
+  details.faq summary::-webkit-details-marker{display:none;}
+  .faq-plus{flex:0 0 auto; color:var(--gold-dark); transition:transform 200ms var(--ease-out);}
+  details.faq[open] .faq-plus{transform:rotate(45deg);}
+  details.faq p{padding-bottom:16px; font-size:15px; opacity:1; transition:opacity 220ms ease 40ms;}
+  details.faq:not([open]) > p{opacity:0; transition:opacity 140ms ease;}
+
+  /* ---------- Checklist ---------- */
+  .progress-wrap{margin:20px 0 30px; background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:18px 22px;}
+  .progress-top{display:flex; justify-content:space-between; font-size:14.5px; color:var(--ink-soft); margin-bottom:10px;}
+  #progress-count{color:var(--gold-dark); font-weight:700;}
+  .progress-track{height:8px; background:var(--line-soft); border-radius:6px; overflow:hidden;}
+  .progress-fill{height:100%; width:0%; background:linear-gradient(90deg, var(--gold-dark), var(--gold-light)); transition:width 420ms var(--ease-out);}
+
+  .check-group-head{display:flex; align-items:center; gap:10px; margin:30px 0 12px;}
+  .check-group-head .benefit-icon{width:30px; height:30px; border-radius:8px; margin-bottom:0;}
+  .check-group-head h3{font-size:16.5px; color:var(--ink); font-family:var(--sans); font-weight:600;}
+  .check-item{
+    display:flex; align-items:flex-start; gap:11px; padding:10px 8px; border-bottom:1px solid var(--line-soft);
+    cursor:pointer; border-radius:8px; transition:background 140ms var(--ease-out);
+  }
+  .check-item:hover{background:var(--gold-tint);}
+  .check-item:last-child{border-bottom:none;}
+  .check-item input{margin-top:3px; width:16px; height:16px; accent-color:var(--gold-dark); flex:0 0 auto; cursor:pointer;}
+  .check-item span{font-size:15px; color:var(--ink-soft);}
+  .check-item input:checked + span{color:var(--ink-faint); text-decoration:line-through;}
+
+  .note{font-size:14px; color:var(--ink-faint); margin-top:6px;}
+
+  @media (max-width: 880px){
+    .sidebar{position:fixed; left:0; top:0; bottom:0; transform:translateX(-104%); transition:transform 260ms var(--ease-out); box-shadow:20px 0 40px rgba(0,0,0,.35);}
+    .sidebar.open{transform:translateX(0);}
+    .menu-toggle{display:flex;}
+    .main{padding:80px 22px 70px;}
+    .benefit-grid, .directory, .phase-overview{grid-template-columns:1fr;}
+    .hero-banner{padding:44px 22px; min-height:auto;}
+    .panel h2{font-size:28px;}
+    .flow-row{flex-direction:column;}
+  }
+
+  .overlay{display:none; position:fixed; inset:0; background:rgba(10,8,5,.45); z-index:15;}
+  .overlay.show{display:block;}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+  <svg viewBox="0 0 24 24" fill="none" stroke="#f3c332" stroke-width="1.6"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+</button>
+<div class="overlay" id="overlay"></div>
+
+<div class="shell">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <svg width="30" height="34" viewBox="0 0 30 34" fill="none">
+        <path d="M15 1 L15 33" stroke="#f3c332" stroke-width="2"/>
+        <path d="M8 9 L8 33" stroke="#f3c332" stroke-width="2"/>
+        <path d="M22 9 L22 33" stroke="#f3c332" stroke-width="2"/>
+        <path d="M3 16 L3 33" stroke="#d4a413" stroke-width="1.6"/>
+        <path d="M27 16 L27 33" stroke="#d4a413" stroke-width="1.6"/>
+      </svg>
+      <div class="brand-text">
+        <div class="brand-name">MAJESTOR</div>
+        <span class="brand-tag">PARTNER</span>
+      </div>
+    </div>
+    <div class="brand-sub">Tu ruta de bienvenida</div>
+
+    <ul class="navlist" id="navlist">
+      <li><button class="navlink active" data-target="bienvenida">
+        <svg width="18" height="18" viewBox="0 0 24 24" class="icn"><path d="M12 2 L14.5 9 L22 9 L16 13.5 L18 21 L12 16.5 L6 21 L8 13.5 L2 9 L9.5 9 Z"/></svg>
+        Bienvenida
+      </button></li>
+      <li><button class="navlink" data-target="pasos">
+        <svg width="18" height="18" viewBox="0 0 24 24" class="icn"><path d="M3 20 L3 15 L8 15 L8 11 L13 11 L13 6 L18 6 L18 20 Z"/></svg>
+        Tus primeros 30 días
+      </button></li>
+      <li><button class="navlink" data-target="beneficios">
+        <svg width="18" height="18" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M8 12.5 L11 15.5 L16 9"/></svg>
+        Tus beneficios
+      </button></li>
+      <li><button class="navlink" data-target="ecommerce">
+        <svg width="18" height="18" viewBox="0 0 24 24" class="icn"><path d="M6 8 H18 L17 20 H7 Z"/><path d="M9 8 V6 a3 3 0 0 1 6 0 v2"/></svg>
+        Vende en tu e-commerce
+      </button></li>
+      <li><button class="navlink" data-target="mentoryx">
+        <svg width="18" height="18" viewBox="0 0 24 24" class="icn"><path d="M12 3 L12 8"/><path d="M7 21 L9 9 H15 L17 21 Z"/><ellipse cx="12" cy="21" rx="5" ry="1.4"/></svg>
+        Mentoryx Advance
+      </button></li>
+      <li><button class="navlink" data-target="eventos">
+        <svg width="18" height="18" viewBox="0 0 24 24" class="icn"><rect x="4" y="5" width="16" height="15" rx="2"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>
+        Organiza tus eventos
+      </button></li>
+      <li><button class="navlink" data-target="marca">
+        <svg width="18" height="18" viewBox="0 0 24 24" class="icn"><path d="M12 3 L4 7 V12 C4 17 7.5 20.5 12 22 C16.5 20.5 20 17 20 12 V7 Z"/></svg>
+        Uso de la marca
+      </button></li>
+      <li><button class="navlink" data-target="comisiones">
+        <svg width="18" height="18" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M9 15 L15 9 M9.5 10 a.5 .5 0 1 0 0-1 a.5 .5 0 0 0 0 1 M14.5 15 a.5 .5 0 1 0 0-1 a.5 .5 0 0 0 0 1"/></svg>
+        Comisiones y pagos
+      </button></li>
+      <li><button class="navlink" data-target="comunidad">
+        <svg width="18" height="18" viewBox="0 0 24 24" class="icn"><path d="M4 5 H20 V16 H9 L5 20 V16 H4 Z"/></svg>
+        Comunidad y soporte
+      </button></li>
+      <li><button class="navlink" data-target="checklist">
+        <svg width="18" height="18" viewBox="0 0 24 24" class="icn"><rect x="3.5" y="4" width="17" height="16" rx="2"/><path d="M7 9 L9 11 L13 7"/><line x1="7" y1="15" x2="17" y2="15"/></svg>
+        Checklist
+      </button></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="pil"><span>PODER</span><span>◆</span><span>IMPACTO</span><span>◆</span><span>LEGADO</span></div>
+      <div class="support-mini">
+        ¿Necesitas ayuda?<br>
+        <a href="https://wa.me/573016117467" target="_blank" rel="noopener">WhatsApp +57 301 611 7467</a><br>
+        <a href="mailto:soporte@majestorpro.com">soporte@majestorpro.com</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- ================= BIENVENIDA ================= -->
+    <section class="panel active" id="panel-bienvenida">
+
+      <div class="hero-banner">
+        <div class="hero-glow"></div>
+        <div class="hero-graphic" aria-hidden="true">
+          <svg width="100%" height="230" viewBox="0 0 200 230" fill="none">
+            <defs>
+              <linearGradient id="heroBarGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#f3c332"/>
+                <stop offset="1" stop-color="#8a6300"/>
+              </linearGradient>
+            </defs>
+            <path d="M100 4 L100 224" stroke="url(#heroBarGradient)" stroke-width="15" stroke-linecap="round"/>
+            <path d="M58 54 L58 224" stroke="url(#heroBarGradient)" stroke-width="15" stroke-linecap="round"/>
+            <path d="M142 54 L142 224" stroke="url(#heroBarGradient)" stroke-width="15" stroke-linecap="round"/>
+            <path d="M20 100 L20 224" stroke="url(#heroBarGradient)" stroke-width="11" stroke-linecap="round" opacity=".65"/>
+            <path d="M180 100 L180 224" stroke="url(#heroBarGradient)" stroke-width="11" stroke-linecap="round" opacity=".65"/>
+          </svg>
+        </div>
+        <div class="hero-copy">
+          <div class="hero-mark">
+            <svg width="26" height="30" viewBox="0 0 30 34" fill="none">
+              <path d="M15 1 L15 33" stroke="#f3c332" stroke-width="2"/>
+              <path d="M8 9 L8 33" stroke="#f3c332" stroke-width="2"/>
+              <path d="M22 9 L22 33" stroke="#f3c332" stroke-width="2"/>
+            </svg>
+            <span>MAJESTOR PARTNER</span>
+          </div>
+          <h1>Bienvenido a MAJESTOR PARTNER.</h1>
+          <p>Una etapa de construcción, posicionamiento y crecimiento con propósito: marca personal, producto, comunidad y oportunidades comerciales, dentro de un mismo ecosistema.</p>
+          <div class="hero-chips">
+            <div class="hero-chip"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><path d="M12 3 L12 8"/><path d="M7 21 L9 9 H15 L17 21 Z"/><ellipse cx="12" cy="21" rx="5" ry="1.4"/></svg> Mentoryx Advance</div>
+            <div class="hero-chip"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><path d="M6 8 H18 L17 20 H7 Z"/><path d="M9 8 V6 a3 3 0 0 1 6 0 v2"/></svg> Vende tus productos</div>
+            <div class="hero-chip"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><rect x="4" y="5" width="16" height="15" rx="2"/><line x1="4" y1="9" x2="20" y2="9"/></svg> Organiza tus eventos</div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-h">
+        <svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M12 7 V12 L15.5 14"/></svg>
+        Qué representa MAJESTOR PARTNER
+      </h3>
+      <p>Hoy comienzas una etapa diseñada para acompañarte en el fortalecimiento de tu marca personal, la estructuración de tus productos, el desarrollo de tus habilidades y la creación de oportunidades comerciales y educativas. MAJESTOR PARTNER no es solo el acceso a una plataforma: es una experiencia de acompañamiento que integra distintas áreas de MAJESTOR para ayudarte a organizar tu visión, identificar tus fortalezas y convertir tus conocimientos en proyectos, productos, talleres, conferencias o actividades con una estructura más clara.</p>
+      <p>A partir de ahora contarás con el acompañamiento de un equipo interdisciplinario (Comercial, Educación, Marketing y las demás áreas que tu proceso requiera) y con un <strong>grupo personalizado</strong> creado exclusivamente para ti: será tu canal principal para coordinar reuniones, entregables y avances.</p>
+
+      <div class="field-hint" style="margin:6px 0 24px;">Durante los <strong>3 años</strong> de vigencia de tu MAJESTOR PARTNER, <strong>no pagas la mensualidad de Majestor Go</strong>: viene incluida, junto con el acceso a NETWORK, tu backoffice, el programa de referidos, el e-commerce y los grupos oficiales.</div>
+
+      <h3 class="section-h">
+        <svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><rect x="3.5" y="4" width="17" height="16" rx="2"/><path d="M7 9 L9 11 L13 7"/><line x1="7" y1="15" x2="17" y2="15"/></svg>
+        Qué encontrarás en esta ruta
+      </h3>
+      <div class="chip-row">
+        <div class="info-chip reveal"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><path d="M8 12.5 L11 15.5 L16 9"/><circle cx="12" cy="12" r="9"/></svg> Tus beneficios</div>
+        <div class="info-chip reveal" style="--d:40ms"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><path d="M3 20 L3 15 L8 15 L8 11 L13 11 L13 6 L18 6 L18 20 Z"/></svg> Tus primeros 30 días</div>
+        <div class="info-chip reveal" style="--d:80ms"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><path d="M6 8 H18 L17 20 H7 Z"/><path d="M9 8 V6 a3 3 0 0 1 6 0 v2"/></svg> Vende en tu e-commerce</div>
+        <div class="info-chip reveal" style="--d:120ms"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><path d="M12 3 L12 8"/><path d="M7 21 L9 9 H15 L17 21 Z"/><ellipse cx="12" cy="21" rx="5" ry="1.4"/></svg> Mentoryx Advance</div>
+        <div class="info-chip reveal" style="--d:160ms"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><rect x="4" y="5" width="16" height="15" rx="2"/><line x1="4" y1="9" x2="20" y2="9"/></svg> Organiza tus eventos</div>
+        <div class="info-chip reveal" style="--d:200ms"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><path d="M12 3 L4 7 V12 C4 17 7.5 20.5 12 22 C16.5 20.5 20 17 20 12 V7 Z"/></svg> Uso de la marca</div>
+        <div class="info-chip reveal" style="--d:240ms"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M9 15 L15 9"/></svg> Comisiones y pagos</div>
+      </div>
+
+      <p>El derecho de uso de la marca MAJESTOR no es ilimitado: se ejerce de acuerdo con el contrato, el manual de marca, el reglamento de uso y las autorizaciones correspondientes. Antes de publicar piezas, anunciar actividades, presentar eventos o utilizar el nombre y los elementos visuales de MAJESTOR, sigue el procedimiento de revisión establecido por las áreas de Marketing y Jurídica.</p>
+      <p>La compra de MAJESTOR PARTNER no representa una promesa de ventas, ingresos, recuperación de la inversión ni resultados garantizados. Los resultados dependerán de tu ejecución, dedicación, capacidad de convocatoria, cumplimiento de los compromisos, condiciones del mercado y desarrollo de cada proyecto.</p>
+      <p>Te recomendamos avanzar en el orden indicado, participar activamente en las reuniones y mantener una comunicación organizada dentro de tu grupo personalizado. El acompañamiento de MAJESTOR te brindará orientación, herramientas y espacios de trabajo — tu participación, cumplimiento y capacidad de ejecutar serán fundamentales para convertir estas oportunidades en resultados.</p>
+      <div class="hero-quote">Bienvenido a una etapa de construcción, posicionamiento y crecimiento con propósito.</div>
+    </section>
+
+    <!-- ================= PRIMEROS 30 DIAS ================= -->
+    <section class="panel" id="panel-pasos">
+      <div class="head-row">
+        <div class="head-icon"><svg width="22" height="22" viewBox="0 0 24 24" class="icn"><path d="M3 20 L3 15 L8 15 L8 11 L13 11 L13 6 L18 6 L18 20 Z"/></svg></div>
+        <div><span class="eyebrow">TU RUTA INICIAL</span><h2>Tus primeros 30 días</h2></div>
+      </div>
+      <p class="lede">Esta ruta busca conocer el estado actual de tu marca, revisar y fortalecer tu producto principal, organizar su estrategia comercial y prepararlo para su presentación y lanzamiento. Contarás con el acompañamiento de Marketing, Educación y Comercial, y con tu grupo personalizado.</p>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M8 12.5 L11 15.5 L16 9"/></svg> Antes de comenzar</h3>
+      <p>Verifica que hayas completado estas actividades:</p>
+      <ul>
+        <li>Confirmaste que tu MAJESTOR PARTNER aparece activo.</li>
+        <li>Ingresaste correctamente a tu backoffice.</li>
+        <li>Identificaste tu ID de registro.</li>
+        <li>Localizaste el código de acceso a MAJESTOR NETWORK.</li>
+        <li>Ingresaste al grupo oficial de MAJESTOR y a Mentalidad MAJESTOR.</li>
+        <li>Fuiste incorporado a tu grupo personalizado de acompañamiento.</li>
+        <li>Identificaste a los integrantes del equipo que acompañarán tu proceso.</li>
+        <li>Tienes disponible la información de tu marca, redes sociales, productos y servicios.</li>
+        <li>Leíste el contrato y los documentos relacionados con MAJESTOR PARTNER.</li>
+      </ul>
+
+      <div class="phase-overview">
+        <div class="phase-card reveal"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><path d="M9 15 L15 9 M9.5 10 a.5 .5 0 1 0 0-1 a.5 .5 0 0 0 0 1 M14.5 15 a.5 .5 0 1 0 0-1 a.5 .5 0 0 0 0 1"/></svg></div><h4>Semana 1</h4><span>Marca y Marketing</span></div>
+        <div class="phase-card reveal" style="--d:60ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><path d="M4 6 H16 V17 H4 Z"/><path d="M8 6 V3 H20 V14 H16"/></svg></div><h4>Semana 2</h4><span>Producto</span></div>
+        <div class="phase-card reveal" style="--d:120ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><circle cx="8" cy="8" r="3.4"/><circle cx="17" cy="16" r="3.4"/><path d="M10.8 9.8 L14.2 14.2"/></svg></div><h4>Semana 3</h4><span>Estrategia comercial</span></div>
+        <div class="phase-card reveal" style="--d:180ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><path d="M12 3 L14 9 L20 9 L15 13 L17 19 L12 15.5 L7 19 L9 13 L4 9 L10 9 Z"/></svg></div><h4>Semana 4</h4><span>Lanzamiento</span></div>
+      </div>
+
+      <div class="steps">
+        <details class="step" open>
+          <summary><span class="step-num">1</span><span class="step-title">Marca, Marketing y plan de acción</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body">
+            <p>El equipo de Marketing conocerá tu marca, revisará su estado actual e identificará qué necesita para fortalecerse. Comparte tu nombre o marca, historia, propósito, principios, público, propuesta de valor, redes, página web, productos, recursos gráficos, contenidos publicados, fortalezas, dificultades y objetivos. Se revisará claridad de identidad, presentación, coherencia visual, mensaje principal, público objetivo, presencia digital y necesidades de fortalecimiento.</p>
+            <p>Este acompañamiento no reemplaza tu gestión diaria ni asume permanentemente la administración de tus redes — busca darte claridad, orientación y una ruta de trabajo.</p>
+            <div class="field-hint"><strong>Entregable:</strong> diagnóstico inicial de marca y plan de acción, con prioridades y recomendaciones.</div>
+          </div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">2</span><span class="step-title">Estructuración y fortalecimiento del producto</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body">
+            <p>Liderada por el Departamento Educativo. Se revisa el producto, servicio, taller, conferencia o proyecto principal que elegiste: qué ofrece, qué necesidad atiende, a quién está dirigido, qué transformación propone, cómo está estructurado, cómo se entrega, su duración, la experiencia del cliente y qué elementos deben fortalecerse.</p>
+            <p>Tú sigues siendo responsable de desarrollar, completar y entregar los contenidos, materiales y recursos propios de tu producto.</p>
+            <div class="field-hint"><strong>Entregable:</strong> ficha estructurada del producto principal y plan inicial de fortalecimiento educativo.</div>
+          </div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">3</span><span class="step-title">Estrategia comercial y preparación de la oferta</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body">
+            <p>A cargo del Departamento Comercial: definición comercial del producto, revisión de precio, cliente ideal, mensaje comercial, oferta, beneficios, canales, contactos y prospectos, posibles alianzas y una ruta inicial de seguimiento. La revisión del precio es una orientación estratégica — la decisión final es tuya, respetando las condiciones del e-commerce y los acuerdos con MAJESTOR.</p>
+            <div class="field-hint"><strong>Entregable:</strong> plan comercial inicial con público objetivo, propuesta de valor, precio definido por ti, mensaje, canales y acciones de seguimiento.</div>
+          </div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">4</span><span class="step-title">Socialización, retroalimentación y preparación del lanzamiento</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body">
+            <p>Presentas tu producto o proyecto ante el equipo de acompañamiento: claridad de la presentación, coherencia marca-producto, estructura de la oferta, mensaje comercial, precio, canales, materiales y tu capacidad para explicar la propuesta. Después recibirás observaciones y recomendaciones; deberás implementar los ajustes antes del lanzamiento.</p>
+            <div class="field-hint"><strong>Entregable:</strong> presentación final del producto, observaciones registradas, ajustes acordados y ruta de preparación para el lanzamiento.</div>
+          </div>
+        </details>
+      </div>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><path d="M12 3 L14 9 L20 9 L15 13 L17 19 L12 15.5 L7 19 L9 13 L4 9 L10 9 Z"/></svg> Lanzamiento y visibilidad de la marca</h3>
+      <p>Una vez que tu marca y producto estén preparados y hayan cumplido las revisiones correspondientes, MAJESTOR podrá coordinar un lanzamiento interno para presentarte a ti, tu marca y tu propuesta dentro de la comunidad: presentación en MAJESTOR NETWORK, entrevistas, lives, publicaciones colaborativas, historias en redes oficiales y muestra de tus productos en el e-commerce, según programación y disponibilidad. Estas acciones aportan visibilidad y posicionamiento, pero no garantizan alcance, clientes, ventas ni resultados económicos.</p>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M8 12.5 L11 15.5 L16 9"/></svg> Semana de Visibilidad Partner</h3>
+      <p>MAJESTOR podrá desarrollar jornadas especiales para mostrar las marcas, proyectos y productos de los Partners: entrevistas, lives temáticos, presentaciones en NETWORK, publicaciones colaborativas y muestras en el e-commerce. La participación se organiza por programación y rotación, considerando tu preparación, la calidad de tu propuesta y el cumplimiento de los lineamientos.</p>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><rect x="3.5" y="4" width="17" height="16" rx="2"/><path d="M7 9 L9 11 L13 7"/><line x1="7" y1="15" x2="17" y2="15"/></svg> Al finalizar los primeros 30 días</h3>
+      <p>Procura haber completado: diagnóstico de marca, plan inicial, producto principal estructurado, cliente ideal identificado, precio definido, mensaje comercial construido, canales seleccionados, contactos organizados, producto socializado y ajustado, ruta de lanzamiento preparada, guía del e-commerce leída, proceso de Mentoryx Advance iniciado, y Biblioteca de Herramientas y Directorio del Ecosistema conocidos.</p>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M12 7 V12 L15.5 14"/></svg> Continuidad del acompañamiento</h3>
+      <p>La ruta inicial no termina la relación de acompañamiento. Después de los primeros 30 días, contarás con <strong>reuniones mensuales de seguimiento durante los 11 meses siguientes</strong>, donde se revisan avances, actividades, resultados, dificultades, nuevos productos, próximos eventos y oportunidades comerciales o educativas. El acompañamiento de MAJESTOR ofrece orientación, herramientas, espacios educativos, conexiones y visibilidad — no constituye una promesa de ventas, recuperación de la inversión, clientes, ingresos ni resultados económicos determinados.</p>
+    </section>
+
+    <!-- ================= BENEFICIOS ================= -->
+    <section class="panel" id="panel-beneficios">
+      <div class="head-row">
+        <div class="head-icon"><svg width="22" height="22" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M8 12.5 L11 15.5 L16 9"/></svg></div>
+        <div><span class="eyebrow">MAJESTOR PARTNER</span><h2>Tus beneficios</h2></div>
+      </div>
+      <p class="lede">MAJESTOR PARTNER integra formación, acompañamiento, herramientas comerciales, visibilidad y conexiones para fortalecer tu marca, tus productos y tus oportunidades.</p>
+
+      <div class="stat-row">
+        <div class="stat-chip cost reveal"><span class="num">USD 7.500</span><span class="unit">/ 3 años</span><span class="desc">Impuestos incluidos.</span></div>
+        <div class="stat-chip earn reveal" style="--d:60ms"><span class="num">Incluida</span><span class="unit">tu Majestor Go, sin mensualidad durante los 3 años</span></div>
+      </div>
+
+      <div class="benefit-grid">
+        <div class="benefit reveal"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><path d="M6 12 a6 6 0 0 1 12 0"/><path d="M3 12 a9 9 0 0 1 18 0"/></svg></div><h4>MAJESTOR NETWORK</h4><p>Comunicación, liderazgo, mentalidad, marca personal, negocios y habilidades comerciales.</p></div>
+        <div class="benefit reveal" style="--d:30ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><path d="M4 6 H16 V17 H4 Z"/><path d="M8 6 V3 H20 V14 H16"/></svg></div><h4>Clases grabadas</h4><p>Contenidos disponibles según programación y actualizaciones.</p></div>
+        <div class="benefit reveal" style="--d:60ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11 a6 6 0 0 0 12 0"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><h4>Oratoria — 4 meses</h4><p>Con posibilidad de certificado y de participar en el reality.</p></div>
+        <div class="benefit reveal" style="--d:90ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="7.5" r="3.2"/><path d="M5.5 20 c0-4.2 3-6.8 6.5-6.8 s6.5 2.6 6.5 6.8"/></svg></div><h4>2 cupos para LUMIA</h4><p>Beneficiarios de 5 a 15 años. Inscripción no automática.</p></div>
+        <div class="benefit reveal" style="--d:120ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><path d="M4 5 H20 V16 H9 L5 20 V16 H4 Z"/></svg></div><h4>Grupo personalizado</h4><p>Tu canal principal con el equipo interdisciplinario que te acompaña.</p></div>
+        <div class="benefit reveal" style="--d:150ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><path d="M4 5 H20 V16 H9 L5 20 V16 H4 Z"/></svg></div><h4>Grupos oficiales</h4><p>Club Oficial de MAJESTOR y Mentalidad MAJESTOR.</p></div>
+        <div class="benefit reveal" style="--d:180ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><circle cx="8" cy="8" r="3.4"/><circle cx="17" cy="16" r="3.4"/><path d="M10.8 9.8 L14.2 14.2"/></svg></div><h4>Acompañamiento — 30 días</h4><p>Equipo interdisciplinario: Marketing, Educación y Comercial.</p></div>
+        <div class="benefit reveal" style="--d:210ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M12 7 V12 L15.5 14"/></svg></div><h4>Reuniones mensuales</h4><p>Seguimiento durante los 11 meses siguientes a tu ruta inicial.</p></div>
+        <div class="benefit reveal" style="--d:240ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><path d="M9 15 L15 9 M9.5 10 a.5 .5 0 1 0 0-1 a.5 .5 0 0 0 0 1 M14.5 15 a.5 .5 0 1 0 0-1 a.5 .5 0 0 0 0 1"/></svg></div><h4>Diagnóstico de marca personal</h4><p>Revisión inicial y ruta de comunicación y posicionamiento.</p></div>
+        <div class="benefit reveal" style="--d:270ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><path d="M12 3 L14 9 L20 9 L15 13 L17 19 L12 15.5 L7 19 L9 13 L4 9 L10 9 Z"/></svg></div><h4>Programa de autoridad</h4><p>Mensaje, pilares de contenido, producto y posicionamiento.</p></div>
+        <div class="benefit reveal" style="--d:300ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><path d="M12 3 L12 8"/><path d="M7 21 L9 9 H15 L17 21 Z"/><ellipse cx="12" cy="21" rx="5" ry="1.4"/></svg></div><h4>Mentoryx Advance — 1 año</h4><p>Pago cubierto por MAJESTOR + 30 días de posicionamiento.</p></div>
+        <div class="benefit reveal" style="--d:330ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M9 15 L15 9"/></svg></div><h4>Banco de oportunidades</h4><p>Perfil dentro de Mentoryx como vitrina y posibilidad de conexión.</p></div>
+        <div class="benefit reveal" style="--d:360ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><path d="M4 6 H16 V17 H4 Z"/><path d="M8 6 V3 H20 V14 H16"/></svg></div><h4>Laboratorio de negocios</h4><p>Estructuración de un plan de acción para tu idea o producto.</p></div>
+        <div class="benefit reveal" style="--d:390ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><path d="M6 12 a6 6 0 0 1 12 0"/><path d="M3 12 a9 9 0 0 1 18 0"/></svg></div><h4>Sala de negocios y conexiones</h4><p>Espacios privados con otros integrantes, aliados y profesionales.</p></div>
+        <div class="benefit reveal" style="--d:420ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><rect x="4" y="8" width="16" height="11" rx="2"/><path d="M9 8 V6 a3 3 0 0 1 6 0 v2"/></svg></div><h4>Consejo Partner</h4><p>Espacios de trabajo y orientación con la Presidencia Comercial.</p></div>
+        <div class="benefit reveal" style="--d:450ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><path d="M6 8 H18 L17 20 H7 Z"/><path d="M9 8 V6 a3 3 0 0 1 6 0 v2"/></svg></div><h4>Publica en el e-commerce</h4><p>Presenta tus propios productos para su publicación.</p></div>
+        <div class="benefit reveal" style="--d:480ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M8 12.5 L11 15.5 L16 9"/></svg></div><h4>Posicionamiento en el e-commerce</h4><p>Presentación de tus productos, sin garantía de ventas.</p></div>
+        <div class="benefit reveal" style="--d:510ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><path d="M12 3 L4 7 V12 C4 17 7.5 20.5 12 22 C16.5 20.5 20 17 20 12 V7 Z"/></svg></div><h4>Uso de la marca MAJESTOR</h4><p>En actividades autorizadas, dentro del reglamento y el contrato.</p></div>
+        <div class="benefit reveal" style="--d:540ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><rect x="4" y="5" width="16" height="15" rx="2"/><line x1="4" y1="9" x2="20" y2="9"/></svg></div><h4>Eventos, talleres y conferencias</h4><p>Presenta propuestas y organiza actividades propias.</p></div>
+        <div class="benefit reveal" style="--d:570ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M9 15 L15 9 M9.5 10 a.5 .5 0 1 0 0-1 a.5 .5 0 0 0 0 1 M14.5 15 a.5 .5 0 1 0 0-1 a.5 .5 0 0 0 0 1"/></svg></div><h4>Comisiones por ventas referidas</h4><p>Go 50 % · Trascendencia 20 % · Partner 20 % · e-commerce 20 %.</p></div>
+        <div class="benefit reveal" style="--d:600ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M2 12 H22 M12 2 a15 15 0 0 1 0 20 a15 15 0 0 1 0 -20"/></svg></div><h4>Actividades internacionales</h4><p>Propuestas y procesos de conexión donde MAJESTOR opera.</p></div>
+        <div class="benefit reveal" style="--d:630ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><path d="M12 3 L14 9 L20 9 L15 13 L17 19 L12 15.5 L7 19 L9 13 L4 9 L10 9 Z"/></svg></div><h4>Invitaciones y visibilidad</h4><p>Entrevistas, lives, pódcast, eventos y espacios de comunidad.</p></div>
+        <div class="benefit reveal" style="--d:660ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><rect x="3.5" y="4" width="17" height="16" rx="2"/><path d="M7 9 L9 11 L13 7"/><line x1="7" y1="15" x2="17" y2="15"/></svg></div><h4>Biblioteca de Herramientas Partner</h4><p>Plantillas para producto, precios, oferta, comercial y eventos.</p></div>
+        <div class="benefit reveal" style="--d:690ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><rect x="4" y="4" width="16" height="16" rx="3"/></svg></div><h4>Directorio del Ecosistema MAJESTOR</h4><p>Conexión con Partners y licenciados de marca.</p></div>
+        <div class="benefit reveal" style="--d:720ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M8 12.5 L11 15.5 L16 9"/></svg></div><h4>Consejo Consultivo Partner</h4><p>Espacio educativo y colaborativo, de carácter rotativo.</p></div>
+      </div>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Compromisos anuales del Partner</h3>
+      <p>Debes realizar o participar en un mínimo de cuatro actividades o eventos por año, según las condiciones contractuales. El control lo lleva el departamento Comercial, con apoyo de Educación, mediante un registro individual. Las actividades deben reportarse y, cuando usen la marca MAJESTOR, contar con autorización previa.</p>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><path d="M9 15 L15 9"/><circle cx="12" cy="12" r="9"/></svg> Metas de referencia</h3>
+      <div class="stat-row">
+        <div class="stat-chip earn reveal"><span class="num">USD 9.500</span><span class="unit">meta anual orientativa</span></div>
+        <div class="stat-chip earn reveal" style="--d:60ms"><span class="num">USD 28.500</span><span class="unit">meta acumulada — 3 años</span></div>
+      </div>
+      <p class="note">Son referencias de trabajo, no representan ingresos, ventas o resultados garantizados. El cumplimiento depende de tu ejecución, capacidad de convocatoria, mercado, gestión comercial, productos y desempeño.</p>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><path d="M4 5 H20 V16 H9 L5 20 V16 H4 Z"/></svg> Renovación</h3>
+      <p>La renovación después de los tres años <strong>no es automática</strong>. Se evalúa de forma integral: cumplimiento de actividades mínimas, gestión comercial demostrable, cumplimiento de compromisos, participación en los espacios establecidos, respeto por el contrato y los lineamientos, uso adecuado de la marca, cumplimiento de obligaciones económicas y desarrollo de proyectos frente a las metas orientativas.</p>
+
+      <div class="not-included">
+        <h4><svg width="16" height="16" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><line x1="8" y1="8" x2="16" y2="16"/><line x1="16" y1="8" x2="8" y2="16"/></svg> Resultados no garantizados</h4>
+        <p style="margin-bottom:8px">MAJESTOR PARTNER ofrece acompañamiento, formación, herramientas, conexiones y espacios de desarrollo. No garantiza:</p>
+        <ul>
+          <li>Ventas, clientes, contratos ni invitaciones.</li>
+          <li>Crecimiento en redes sociales ni posicionamiento permanente.</li>
+          <li>Ingresos, utilidades ni recuperación de la inversión.</li>
+          <li>Alianzas, participación en eventos ni resultados comerciales específicos.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= E-COMMERCE ================= -->
+    <section class="panel" id="panel-ecommerce">
+      <div class="head-row">
+        <div class="head-icon"><svg width="22" height="22" viewBox="0 0 24 24" class="icn"><path d="M6 8 H18 L17 20 H7 Z"/><path d="M9 8 V6 a3 3 0 0 1 6 0 v2"/></svg></div>
+        <div><span class="eyebrow">TU PROPIO ESPACIO COMERCIAL</span><h2>Vende en tu e-commerce</h2></div>
+      </div>
+      <p class="lede">Puedes presentar y publicar tus productos o servicios dentro del e-commerce de MAJESTOR, siempre que cumplas el procedimiento y las condiciones aplicables. El acompañamiento de los primeros 30 días se concentra en un producto principal, pero esto no limita la publicación de otros productos propios.</p>
+
+      <div class="phase-label" style="margin-top:10px;"><svg width="16" height="16" viewBox="0 0 24 24" class="icn"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10 V7 a4 4 0 0 1 8 0 v3"/></svg> Antes de empezar</div>
+      <div class="steps">
+        <details class="step" open>
+          <summary><span class="step-num">1</span><span class="step-title">Lee "Vende en tu e-commerce"</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Léelo por completo antes de definir tu idea — te ayuda a organizarla, construir una oferta clara y preparar la información necesaria. No completes el formulario sin haber definido antes qué vas a ofrecer, a quién y qué resultado puede obtener el cliente.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">2</span><span class="step-title">Define qué sabes hacer</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Identifica tus conocimientos, experiencia, habilidades, metodología y los temas o procesos en los que puedes orientar a otras personas. El objetivo: convertir tu experiencia en una propuesta organizada y útil para un público específico.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">3</span><span class="step-title">Identifica a quién puedes ayudar</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Responde: ¿quién necesita este producto? ¿qué dificultad enfrenta? ¿qué desea conseguir? Evita afirmar que tu producto es para todas las personas — una oferta específica se comunica mejor y facilita que el cliente sepa si es para él.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">4</span><span class="step-title">Identifica el problema y el resultado</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Determina el problema concreto que atiendes y el resultado que puede obtener el cliente: situación actual, necesidad, proceso, resultado esperado y entregables. Comunica los resultados de forma responsable — sin promesas que no puedas demostrar ni transformaciones garantizadas.</p></div>
+        </details>
+      </div>
+
+      <div class="phase-label"><svg width="16" height="16" viewBox="0 0 24 24" class="icn"><path d="M12 3 L14 9 L20 9 L15 13 L17 19 L12 15.5 L7 19 L9 13 L4 9 L10 9 Z"/></svg> Diseña tu oferta</div>
+      <div class="steps">
+        <details class="step">
+          <summary><span class="step-num">5</span><span class="step-title">Construye tu oferta</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body">
+            <p>Problema: la dificultad concreta del cliente. Transformación: el cambio o resultado esperado. Método: cómo desarrollarás el proceso (clases, mentorías, talleres, herramientas). Entregable: lo que recibirá al finalizar.</p>
+            <div class="field-hint" style="font-family:var(--display); font-weight:700; text-align:center; font-size:16px;">Problema + transformación + método + entregable</div>
+          </div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">6</span><span class="step-title">Define el nivel de tu producto</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body">
+            <p>Puedes construir una ruta progresiva para tus clientes. La autorización de un producto no aprueba automáticamente los demás.</p>
+            <div class="benefit-grid" style="margin-top:12px;">
+              <div class="benefit"><h4>Producto gratuito</h4><p>Aporta valor y genera confianza: guías, clases abiertas, webinars, retos, recursos descargables.</p></div>
+              <div class="benefit"><h4>Producto de entrada</h4><p>Primera oferta accesible: talleres, clases especializadas, minicursos, retos guiados.</p></div>
+              <div class="benefit"><h4>Mayor profundidad</h4><p>Más contenido y acompañamiento: programas grupales, mentorías, consultorías.</p></div>
+            </div>
+          </div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">7</span><span class="step-title">Estructura el producto</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Define nombre, descripción, problema, público, objetivo, beneficios, metodología, modalidad, estructura del contenido, duración, materiales, entregables, precio, moneda, condiciones de acceso y políticas aplicables. Si mencionas una certificación o aval, debes demostrar que cuentas con autorización para ello.</p></div>
+        </details>
+      </div>
+
+      <div class="phase-label"><svg width="16" height="16" viewBox="0 0 24 24" class="icn"><path d="M12 16 V4 M7 9 L12 4 L17 9"/><path d="M4 16 v3 a1 1 0 0 0 1 1 h14 a1 1 0 0 0 1 -1 v-3"/></svg> Publica</div>
+      <div class="steps">
+        <details class="step">
+          <summary><span class="step-num">8</span><span class="step-title">Revisa tu producto antes de enviarlo</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Confirma: nombre claro, público específico, necesidad real, resultado explicado, estructura comprensible, duración y modalidad correctas, precio definido, materiales listos, sin información engañosa ni promesas garantizadas, y respeto de derechos de autor. Eres responsable de la creación, calidad, legalidad, contenido y cumplimiento de tus productos.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">9</span><span class="step-title">Completa el formulario del e-commerce</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Después de leer "Vende en tu e-commerce" y preparar la información, completa el <a class="mini-link" href="https://forms.gle/FXxvppbtZJ9HUBpj6" target="_blank" rel="noopener">formulario del e-commerce</a>. Si publicarás varios productos, presenta la información de cada uno por separado. Completarlo no significa publicación automática.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">10</span><span class="step-title">Atiende la revisión</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>MAJESTOR revisará claridad de la oferta, presentación, calidad de la información, coherencia del precio, alcance de las promesas y cumplimiento de lineamientos. Si hay observaciones, realiza los ajustes antes de la publicación. Esta revisión no sustituye tus responsabilidades legales, tributarias o profesionales.</p></div>
+        </details>
+      </div>
+
+      <div class="phase-label"><svg width="16" height="16" viewBox="0 0 24 24" class="icn"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg> Condiciones y responsabilidades</div>
+      <div class="steps">
+        <details class="step">
+          <summary><span class="step-num">11</span><span class="step-title">Condiciones económicas</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body">
+            <div class="stat-row" style="margin:0 0 14px;">
+              <div class="stat-chip earn"><span class="num">80%</span><span class="unit">para ti, comisión estándar</span></div>
+              <div class="stat-chip earn"><span class="num">50/50</span><span class="unit">solo con alianza directa formalizada por escrito</span></div>
+            </div>
+            <p>Los productos gratuitos no tienen costo para el cliente y no generan comisión, ni para ti ni para MAJESTOR. La distribución 50/50 no se activa automáticamente por adquirir Majestor Partner ni por publicar un producto — requiere un acuerdo independiente y por escrito.</p>
+          </div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">12</span><span class="step-title">Ventas, comisiones y pagos</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Las operaciones se manejan en dólares estadounidenses. Las compras deben realizarse mediante los enlaces de pago autorizados. Para solicitar el pago: encontrarte activo, saldo mínimo de USD 30, solicitud desde tu backoffice. Solicitudes los martes, pagos los viernes. Una devolución, reverso o contracargo puede descontarse de tus comisiones.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">13</span><span class="step-title">Tus responsabilidades</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Crear y mantener actualizado tu producto, entregar información real, contar con los derechos de los contenidos, cumplir lo anunciado, atender a tus clientes, gestionar garantías y devoluciones, mantener actualizados precios y condiciones, cumplir obligaciones legales y tributarias, proteger datos personales y respetar el manual de marca.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">14</span><span class="step-title">Alcance de MAJESTOR</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>La publicación no significa que MAJESTOR sea el creador del producto, avale resultados, asuma su operación, garantice ventas o clientes, ni que esté obligado a promocionarlo. Cualquier promoción o apoyo adicional debe estar expresamente acordado.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">15</span><span class="step-title">Publicación de productos adicionales</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Cada producto adicional debe cumplir el proceso de estructuración, tener su propia información y materiales, superar la revisión y cumplir las condiciones económicas y operativas. La cantidad de productos publicados puede depender de su calidad, vigencia y cumplimiento.</p></div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ================= MENTORYX ================= -->
+    <section class="panel" id="panel-mentoryx">
+      <div class="head-row">
+        <div class="head-icon"><svg width="22" height="22" viewBox="0 0 24 24" class="icn"><path d="M12 3 L12 8"/><path d="M7 21 L9 9 H15 L17 21 Z"/><ellipse cx="12" cy="21" rx="5" ry="1.4"/></svg></div>
+        <div><span class="eyebrow">POSICIONAMIENTO Y VISIBILIDAD PROFESIONAL</span><h2>Mentoryx Advance</h2></div>
+      </div>
+      <p class="lede">Como MAJESTOR PARTNER cuentas con Mentoryx Advance durante un año y un periodo de posicionamiento de 30 días dentro de las primeras cinco páginas de la plataforma. Busca fortalecer tu presencia profesional y dar visibilidad a tu marca, trayectoria, productos o servicios.</p>
+      <div class="field-hint" style="margin-bottom:24px;">MAJESTOR se encarga del pago de Mentoryx Advance — tú solo completas el registro, omitiendo el proceso de pago. El posicionamiento es visibilidad dentro de la plataforma; no garantiza contactos, clientes, contrataciones, ventas ni resultados económicos.</div>
+
+      <div class="steps">
+        <details class="step" open>
+          <summary><span class="step-num">1</span><span class="step-title">Confirma la activación del beneficio</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Antes de registrarte, confirma en tu grupo personalizado que el equipo autorizó el inicio del proceso. No crees cuentas o registros duplicados.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">2</span><span class="step-title">Prepara la información de tu perfil</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Ten disponibles: nombre completo, país y ciudad, contacto, correo, fotografía profesional, marca o proyecto, logotipo, descripción profesional, trayectoria, áreas de experiencia, propósito, propuesta de valor, público, productos o servicios, enlaces y redes. La información debe ser coherente con tu diagnóstico de marca.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">3</span><span class="step-title">Realiza tu registro</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body">
+            <p>Cuando el equipo te lo indique, ingresa a <a class="mini-link" href="https://www.mentoryx.com/4k/" target="_blank" rel="noopener">mentoryx.com/4k</a> y completa tu registro con información real y un correo al que tengas acceso permanente, siguiendo las indicaciones para omitir el pago.</p>
+            <div class="field-hint">Si la plataforma solicita un pago o encuentras alguna dificultad, no realices la transacción — comunícate con tu grupo personalizado o con Soporte.</div>
+          </div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">4</span><span class="step-title">Completa tu perfil</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Completa todos los espacios habilitados: quién eres, tu experiencia, en qué áreas orientas, qué problema ayudas a resolver, tu público, tus productos y cómo contactarte. Evita descripciones demasiado generales o promesas que no dependan exclusivamente de ti. Eres responsable de la veracidad y legalidad de tu perfil.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">5</span><span class="step-title">Solicita la revisión del perfil</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Informa en tu grupo personalizado que tu perfil está listo. El equipo revisará claridad, coherencia con tu marca, calidad de la fotografía, presentación y datos de contacto. Si recibes observaciones, ajústalas antes de iniciar el posicionamiento — la revisión es orientativa, tú sigues siendo responsable de la información.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">6</span><span class="step-title">Inicio del posicionamiento</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Con el perfil completo y revisado, el equipo coordinará la activación de los 30 días de posicionamiento dentro de las primeras cinco páginas de Mentoryx. La ubicación exacta puede variar según el funcionamiento de la plataforma.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">7</span><span class="step-title">Aprovecha los 30 días de visibilidad</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Mantén actualizada la información, verifica que los enlaces funcionen, responde oportunamente los contactos, comparte tu perfil en tus canales, da seguimiento organizado a las personas interesadas y registra las consultas generadas.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">8</span><span class="step-title">Tus responsabilidades</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Entregar información completa y verdadera, usar recursos que tengas derecho a publicar, mantener tus datos actualizados, atender recomendaciones, gestionar tus propias conversaciones, cumplir los términos de Mentoryx y evitar afirmaciones engañosas.</p></div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ================= EVENTOS ================= -->
+    <section class="panel" id="panel-eventos">
+      <div class="head-row">
+        <div class="head-icon"><svg width="22" height="22" viewBox="0 0 24 24" class="icn"><rect x="4" y="5" width="16" height="15" rx="2"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg></div>
+        <div><span class="eyebrow">CREA, CONECTA Y EXPANDE</span><h2>Organiza tus eventos</h2></div>
+      </div>
+      <p class="lede">Uno de los principales beneficios de MAJESTOR PARTNER es la posibilidad de crear eventos, talleres, conferencias, encuentros y actividades que impulsen tu liderazgo, tu marca, tus productos y tus conexiones. Tú lideras el proyecto — MAJESTOR acompaña sin limitar tu creatividad ni tu autonomía.</p>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M8 12.5 L11 15.5 L16 9"/></svg> Evento propio vs. evento con MAJESTOR</h3>
+      <div class="benefit-grid">
+        <div class="benefit">
+          <h4>Evento propio del Partner</h4>
+          <p>Si se realiza exclusivamente bajo tu marca: lo organizas con autonomía, sin necesitar autorización de MAJESTOR. Defines formato, contenido, invitados y condiciones, usando tu propia identidad visual. No debes presentarlo como oficial de MAJESTOR, aunque puedes mencionar tu vinculación como Partner.</p>
+        </div>
+        <div class="benefit">
+          <h4>Evento vinculado con MAJESTOR</h4>
+          <p>Si usarás el nombre, logotipo, canales, recursos o acompañamiento de MAJESTOR, comparte primero la información básica con el Departamento Comercial, para que MAJESTOR conozca la actividad y cuide el uso adecuado de la marca.</p>
+        </div>
+      </div>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><rect x="3.5" y="4" width="17" height="16" rx="2"/><path d="M7 9 L9 11 L13 7"/><line x1="7" y1="15" x2="17" y2="15"/></svg> Ruta rápida del evento</h3>
+      <div class="flow-row">
+        <div class="flow-step reveal"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><path d="M9 15 L15 9 M9.5 10 a.5 .5 0 1 0 0-1 a.5 .5 0 0 0 0 1"/></svg></div><h4>1. Comparte tu idea</h4><p>Con Comercial.</p></div>
+        <div class="flow-arrow"><svg width="20" height="20" viewBox="0 0 24 24" class="icn"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></div>
+        <div class="flow-step reveal" style="--d:60ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M8 12.5 L11 15.5 L16 9"/></svg></div><h4>2. Recibe orientación</h4><p>Realiza los ajustes necesarios.</p></div>
+        <div class="flow-arrow"><svg width="20" height="20" viewBox="0 0 24 24" class="icn"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></div>
+        <div class="flow-step reveal" style="--d:120ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><path d="M12 3 L14 9 L20 9 L15 13 L17 19 L12 15.5 L7 19 L9 13 L4 9 L10 9 Z"/></svg></div><h4>3. Organiza y convoca</h4><p>Comunica tu actividad.</p></div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-step reveal"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M10 8.5 L16 12 L10 15.5 Z" fill="currentColor" stroke="none"/></svg></div><h4>4. Realiza el evento</h4><p>Lidera la experiencia.</p></div>
+        <div class="flow-arrow"><svg width="20" height="20" viewBox="0 0 24 24" class="icn"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg></div>
+        <div class="flow-step reveal" style="--d:60ms"><div class="benefit-icon"><svg width="17" height="17" viewBox="0 0 24 24" class="icn"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg></div><h4>5. Presenta el reporte</h4><p>Liquida y define el siguiente paso.</p></div>
+      </div>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><path d="M6 12 a6 6 0 0 1 12 0"/><path d="M3 12 a9 9 0 0 1 18 0"/></svg> Cómo desarrollarlo</h3>
+      <p>Puedes hacerlo individualmente, con otros MAJESTOR PARTNERS, con Masters, con líderes de tu comunidad o con marcas externas. Si participan varias personas, conversen antes sobre el propósito, el papel de cada uno, responsabilidades, aportes, gastos y la distribución económica — no se requiere un documento extenso, solo que los acuerdos principales queden claros.</p>
+
+      <div class="steps">
+        <details class="step" open>
+          <summary><span class="step-num">1</span><span class="step-title">Comparte tu idea</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Preséntala mediante tu grupo personalizado o al correo <a href="mailto:comercial@majestorpro.com">comercial@majestorpro.com</a>: nombre provisional, objetivo, público, formato, fecha aproximada, lugar o plataforma, participantes, precio estimado y el tipo de acompañamiento que esperas. No necesitas tener el proyecto terminado para compartirlo.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">2</span><span class="step-title">Recibe orientación</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Comercial es tu canal principal y, según lo que necesite tu evento, coordinará el apoyo de Educación, Marketing, Jurídico, Financiero u otros Partners y Masters. No tienes que gestionar cada área por separado.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">3</span><span class="step-title">Organiza lo esencial</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Define nombre, fecha, horario, lugar o enlace, público, capacidad estimada, tema, participantes, precio, canal de inscripción, forma de pago, responsable de atención, gastos principales y estrategia de convocatoria. Puedes ajustarlo progresivamente.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">4</span><span class="step-title">Utiliza la marca correctamente</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Si usarás el nombre o logotipo de MAJESTOR, las piezas principales deben revisarse antes de publicarse: logotipo, nombre del evento, fecha, participantes, precio y mensaje central. Cambios pequeños que no alteren el sentido no requieren nueva aprobación.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">5</span><span class="step-title">Convoca y moviliza</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Apóyate en tus contactos, redes, comunidad y referidos, y en otros Partners, Masters y aliados. MAJESTOR podrá orientar la estrategia y, si la actividad está aprobada y hay disponibilidad, considerar difusión en sus canales — esto no garantiza una cantidad de asistentes, ventas ni ingresos.</p></div>
+        </details>
+        <details class="step">
+          <summary><span class="step-num">6</span><span class="step-title">Vive y lidera la experiencia</span><svg class="step-chevron" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary>
+          <div class="step-body"><p>Recibe adecuadamente a los asistentes, cumple el contenido anunciado, respeta los horarios, evita promesas de resultados, usa correctamente la marca y recoge información de contacto de manera responsable.</p></div>
+        </details>
+      </div>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><path d="M9 15 L15 9"/><circle cx="12" cy="12" r="9"/></svg> Distribución económica</h3>
+      <div class="stat-row">
+        <div class="stat-chip earn reveal"><span class="num">80%</span><span class="unit">para ti o los organizadores</span></div>
+        <div class="stat-chip earn reveal" style="--d:60ms"><span class="num">20%</span><span class="unit">para MAJESTOR</span></div>
+      </div>
+      <p>Se calcula sobre la utilidad después de descontar los gastos demostrables. Si participan varios Partners o Masters, ellos acuerdan libremente cómo repartir el 80 %. El pago a MAJESTOR debe realizarse dentro de los <strong>cinco días hábiles</strong> siguientes a la finalización del evento.</p>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg> Cierre, liquidación y reporte</h3>
+      <p>Después del evento, organiza el total de ingresos, gastos, soportes, utilidad, el porcentaje de MAJESTOR y la distribución entre organizadores. Envía un reporte breve con nombre y fecha del evento, asistentes, actividades realizadas, resultados, aprendizajes y próximos pasos.</p>
+
+      <div class="group-row">
+        <strong>Reporte breve de evento</strong>
+        <a href="#ENLACE-GOOGLE-FORM-REPORTE-EVENTO" target="_blank" rel="noopener">Completar formulario →</a>
+      </div>
+      <p class="note">Regístralo dentro de los cinco días hábiles siguientes a tu evento, con copia a <a href="mailto:comercial@majestorpro.com">comercial@majestorpro.com</a>. <em>(Enlace pendiente de agregar.)</em></p>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><circle cx="8" cy="8" r="3.4"/><circle cx="17" cy="16" r="3.4"/><path d="M10.8 9.8 L14.2 14.2"/></svg> Eventos en alianza</h3>
+      <p>Antes de comenzar, acuerden quién coordina, quién convoca, quién administra el recaudo, quién contrata proveedores, quién presenta el informe, cómo se dividen los gastos y el 80 % de los organizadores, y cómo se atenderán las devoluciones. Cada participante conserva su identidad y aporta desde su experiencia.</p>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Compromiso de activación y apoyo de MAJESTOR</h3>
+      <p>Cada año debes desarrollar un mínimo de eventos, talleres, conferencias o actividades — el número se define en tu plan de trabajo según tu realidad, país, proyecto y objetivos. MAJESTOR puede aportar orientación comercial, revisión educativa, recomendaciones de comunicación, conexión con otros Partners y difusión en canales seleccionados — pero no asume automáticamente los gastos, la logística completa, la convocatoria total, el recaudo ni los resultados económicos.</p>
+    </section>
+
+    <!-- ================= MARCA ================= -->
+    <section class="panel" id="panel-marca">
+      <div class="head-row">
+        <div class="head-icon"><svg width="22" height="22" viewBox="0 0 24 24" class="icn"><path d="M12 3 L4 7 V12 C4 17 7.5 20.5 12 22 C16.5 20.5 20 17 20 12 V7 Z"/></svg></div>
+        <div><span class="eyebrow">APLICABLE A MAJESTOR PARTNER</span><h2>Uso de la marca y presentación</h2></div>
+      </div>
+      <p class="lede">El derecho de uso de la marca MAJESTOR no es ilimitado. Esta pestaña reúne, completo y tal cual, el Reglamento de Uso de la Marca MAJESTOR y el Protocolo para presentarte como MAJESTOR PARTNER — consérvala a mano.</p>
+
+      <div class="field-hint" style="margin-bottom:26px;">Este reglamento complementa el contrato de MAJESTOR PARTNER y el Manual de Marca vigente. Ante cualquier diferencia, aplica lo establecido en el contrato y en las autorizaciones escritas emitidas por MAJESTOR.</div>
+
+      <h3 class="section-h" style="margin-top:8px;"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><path d="M12 3 L4 7 V12 C4 17 7.5 20.5 12 22 C16.5 20.5 20 17 20 12 V7 Z"/></svg> Reglamento de uso de la marca MAJESTOR</h3>
+
+      <details class="faq" open><summary>1. Objetivo <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Establece las condiciones para el uso correcto, responsable y autorizado del nombre, logotipo, identidad visual y demás elementos asociados con MAJESTOR. Su finalidad es proteger la identidad de la marca, mantener una comunicación coherente y permitir que cada Partner utilice los recursos autorizados dentro de las actividades relacionadas con su vinculación.</p></details>
+
+      <details class="faq"><summary>2. Autorización de uso <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>La adquisición de Majestor Partner permite identificarte como "MAJESTOR PARTNER" durante la vigencia contractual. Esta autorización es limitada, temporal, sujeta a la vigencia del contrato, no transferible, no cedible a terceros, no concede propiedad sobre la marca, no te convierte en representante legal ni te permite asumir obligaciones en nombre de MAJESTOR. Puede estar sujeta a restricciones adicionales según el tipo de pieza, actividad, campaña, producto, evento o alianza.</p></details>
+
+      <details class="faq"><summary>3. Usos permitidos <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Previa revisión o autorización cuando corresponda: identificarte públicamente como Majestor Partner, incorporarlo en biografías y presentaciones, participar en eventos autorizados, crear piezas de actividades aprobadas, difundir invitaciones oficiales, comunicar tu participación en NETWORK, compartir publicaciones oficiales sin modificarlas, promocionar productos autorizados del e-commerce, participar en entrevistas y lives, usar materiales suministrados por MAJESTOR, y presentarte en el Directorio del Ecosistema. Esta autorización general no elimina la obligación de aprobación previa para campañas, eventos, productos o piezas que puedan comprometer la imagen de la empresa.</p></details>
+
+      <details class="faq"><summary>4. Manual de Marca <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Todo uso visual debe cumplir el Manual de Marca oficial. La identidad representa Poder • Impacto • Legado; su estructura ascendente comunica evolución, fortaleza, dirección y trascendencia. El estilo debe ser elegante, corporativo, aspiracional, sobrio, moderno, minimalista, profesional y de alto contraste, con composiciones limpias que eviten la saturación visual.</p></details>
+
+      <details class="faq"><summary>5. Logotipos autorizados <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Utiliza exclusivamente los archivos oficiales entregados o habilitados por MAJESTOR: logotipo original, negro, blanco, dorado y versiones complementarias autorizadas, según el fondo, formato, legibilidad y finalidad de la pieza. No descargues logotipos desde buscadores, capturas de pantalla, publicaciones antiguas o archivos enviados por personas no autorizadas.</p></details>
+
+      <details class="faq"><summary>6. Tipografías <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>"MAJESTOR" utiliza Constantia Bold en mayúsculas; "PODER, IMPACTO Y LEGADO" utiliza Constantia Regular en mayúsculas. Las piezas institucionales deben respetar estas tipografías o las alternativas expresamente autorizadas por Marketing. No reconstruyas ni modifiques manualmente el logotipo con otras tipografías.</p></details>
+
+      <details class="faq"><summary>7. Colores <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>La identidad visual usa principalmente negro, blanco, dorado y tonos ocres y grises complementarios. El rojo se usa únicamente para destacar información puntual, como precios o palabras importantes, cuando resulte coherente con el diseño. Consulta los códigos exactos en el Manual de Marca vigente; los colores complementarios no deben alterar la identidad principal ni reducir la legibilidad del logotipo.</p></details>
+
+      <details class="faq"><summary>8. Usos visuales prohibidos <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>No está permitido: modificar el logotipo, cambiar sus proporciones, deformarlo, alterar sus colores o tipografía, separar sus elementos, agregar sombras o efectos no aprobados, girarlo o inclinarlo, usar versiones pixeladas, colocarlo sobre fondos que dificulten su lectura, incorporarlo en composiciones saturadas, combinarlo con símbolos confusos, crear versiones nuevas, presentar una marca propia como división oficial de MAJESTOR, alterar "Poder • Impacto • Legado", usar archivos no autorizados, o ubicarlo en contenidos ofensivos, discriminatorios, engañosos o contrarios a los principios de MAJESTOR.</p></details>
+
+      <details class="faq"><summary>9. Usos comerciales prohibidos <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>No puedes: crear productos con el nombre MAJESTOR sin autorización, registrar el nombre o logotipo a tu nombre o al de terceros, usar MAJESTOR como razón social propia, crear cuentas o dominios que aparenten ser canales oficiales, crear sedes o academias en nombre de MAJESTOR, vender licencias de uso de la marca, transferir su uso a terceros, firmar contratos o recibir dinero en nombre de MAJESTOR, presentarte como propietario o vocero oficial, modificar precios o condiciones de sus productos, publicar promociones no aprobadas, prometer ventas o resultados en nombre de la empresa, afirmar que un producto fue avalado por MAJESTOR sin autorización escrita, usar la marca en actividades políticas o religiosas, o usar bases de datos o contactos de MAJESTOR para fines no autorizados.</p></details>
+
+      <details class="faq"><summary>10. Uso de MAJESTOR en productos propios <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Diferencia tres casos: <strong>producto del Partner publicado en el e-commerce</strong> (creado y operado por ti, no debe presentarse como creado o avalado por MAJESTOR); <strong>producto en alianza directa</strong> (cuenta con acuerdo independiente y escrito sobre participación, uso de marca, responsabilidades y condiciones económicas); <strong>producto propio de MAJESTOR</strong> (pertenece a la empresa, se comunica por sus canales oficiales o por personas expresamente autorizadas). La sola presencia de un producto en el e-commerce no te convierte en vocero de MAJESTOR ni implica alianza directa.</p></details>
+
+      <details class="faq"><summary>11. Presentación como MAJESTOR PARTNER <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Puedes comunicar tu vinculación con expresiones como "Soy MAJESTOR PARTNER" o "Hago parte del ecosistema MAJESTOR como Partner". Evita expresiones que sugieran que eres propietario de MAJESTOR, que la representas legalmente, que puedes vincularla contractualmente, que tu producto fue certificado por ella, o que la empresa garantiza tus resultados.</p></details>
+
+      <details class="faq"><summary>12. Uso en redes sociales <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Puedes mencionar tu vinculación y compartir información oficial siempre que uses correctamente el nombre y logotipos autorizados, no te presentes como cuenta oficial, no publiques información confidencial ni piezas modificadas, no anuncies actividades sin aprobación, no publiques promesas de ingresos, y no respondas en nombre de la empresa asuntos jurídicos, financieros o administrativos. Puedes etiquetar @somosmajestor (Instagram, Facebook y YouTube).</p></details>
+
+      <details class="faq"><summary>13. Uso en eventos, talleres y conferencias <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Requiere autorización previa y escrita. Antes de anunciar, se revisan nombre, objetivo, organizadores, participantes, fecha, contenido, conferencistas, precio, piezas, uso del logotipo, condiciones comerciales, proyección de ingresos y gastos, y canales de recaudo. La aprobación de una pieza no autoriza el evento completo — también requiere revisión Comercial, Educativa y de Marketing. No se pueden anunciar eventos como oficiales sin autorización expresa.</p></details>
+
+      <details class="faq"><summary>14. Uso en alianzas con otros Partners o Masters <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Para usar la marca en una alianza: informa quiénes participan, define el papel de cada uno, establece responsabilidades, acuerda las condiciones económicas, presenta el contenido y solicita aprobación antes de publicar. La participación de un invitado, Partner o Master no le concede autorización permanente para usar el nombre o logotipo de MAJESTOR.</p></details>
+
+      <details class="faq"><summary>15. Piezas que requieren aprobación <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Piezas de eventos, anuncios comerciales, campañas publicitarias, promociones, publicaciones pagadas, materiales impresos, pendones, diplomas, presentaciones institucionales, productos con el nombre o logotipo, páginas web vinculadas, videos promocionales, comunicados de prensa, alianzas con otras marcas, piezas con precios o condiciones de productos de MAJESTOR, y cualquier material interpretable como comunicación oficial. Compartir una publicación oficial sin modificarla no requiere nueva aprobación.</p></details>
+
+      <details class="faq"><summary>16. Solicitud de autorización <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Envía tu solicitud con tiempo suficiente antes de publicar, imprimir, contratar publicidad o anunciar una actividad. Debe incluir tu nombre, país, ciudad, tipo de pieza, objetivo, público, canales, fecha prevista, texto completo, diseño o borrador, logotipos utilizados y datos de contacto. No publiques el material hasta recibir autorización escrita. Áreas responsables: Marketing (marketing@majestorpro.com) y Jurídico (juridico@majestorpro.com); según el contenido también podrá requerirse Comercial, Educativo o Financiero.</p></details>
+
+      <details class="faq"><summary>17. Alcance de la aprobación <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>La autorización se aplica únicamente a la pieza o actividad presentada, no se extiende a nuevas versiones ni autoriza cambios posteriores, y podrá incluir condiciones, ajustes o una vigencia específica. Si cambia el texto, diseño, fecha, precio, organizadores, contenido o finalidad, debe solicitarse una nueva revisión.</p></details>
+
+      <details class="faq"><summary>18. Información confidencial <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>No publiques ni compartas sin autorización: documentos internos, bases de datos, información personal de otros miembros, estrategias comerciales, contratos, información financiera, material educativo restringido, enlaces privados, grabaciones no autorizadas, datos de clientes o información de reuniones internas. Participar en un grupo o reunión no autoriza su grabación, publicación o distribución.</p></details>
+
+      <details class="faq"><summary>19. Incumplimiento <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Ante un uso incorrecto o no autorizado, MAJESTOR podrá solicitar corrección inmediata, modificación o retiro de la pieza, suspensión de una campaña, eliminación del material, aclaración pública, entrega de información sobre el uso realizado, o suspensión de la autorización mientras se revisa el caso. Debes atender la solicitud dentro del plazo indicado; la omisión, reincidencia o un uso que afecte la identidad o reputación de MAJESTOR puede dar lugar a las medidas contractuales correspondientes.</p></details>
+
+      <details class="faq"><summary>20. Finalización de la autorización <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Al terminar, suspenderse o finalizar la relación contractual, debes dejar de presentarte como Majestor Partner, retirar el logotipo de perfiles y materiales, suspender campañas relacionadas, eliminar expresiones de vigencia y dejar de usar documentos y recursos restringidos. Los contenidos históricos podrán mantenerse solo cuando no generen confusión sobre la vigencia de la relación y exista autorización de MAJESTOR.</p></details>
+
+      <details class="faq"><summary>21. Lista de verificación <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Antes de usar la marca, confirma: mi contrato está vigente; el uso corresponde a una actividad autorizada; usé un logotipo oficial y respeté proporciones y colores; consulté el Manual de Marca; diferencié mi marca de MAJESTOR; no me presenté como representante legal; no prometí resultados en su nombre; no presenté mi producto como creado o certificado por MAJESTOR; tengo autorización para usar imágenes y testimonios; protegí la información confidencial; presenté la pieza para revisión cuando correspondía; recibí autorización escrita antes de publicar; no hice cambios después de la aprobación; y conservé evidencia de la autorización.</p></details>
+
+      <div class="group-row">
+        <strong>Formulario único de solicitud</strong>
+        <a href="#ENLACE-GOOGLE-FORM-SOLICITUD" target="_blank" rel="noopener">Completar formulario →</a>
+      </div>
+      <p class="note">Úsalo para piezas, campañas, alianzas y eventos que requieran autorización (punto 16). <em>(Enlace pendiente de agregar.)</em></p>
+
+      <div class="divider"></div>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><path d="M12 2 L14.5 9 L22 9 L16 13.5 L18 21 L12 16.5 L6 21 L8 13.5 L2 9 L9.5 9 Z"/></svg> Protocolo para presentarte como MAJESTOR PARTNER</h3>
+      <p>Este protocolo te orienta sobre cómo comunicar tu relación con MAJESTOR manteniendo tu independencia profesional, comercial y creativa. Conservas tu propia identidad, marca, estilo, productos y canales — no necesitas convertir toda tu presencia profesional en una extensión de MAJESTOR.</p>
+
+      <details class="faq"><summary>Identidad propia del Partner <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Puedes seguir desarrollando libremente tu marca personal o empresarial, tus productos y servicios, redes sociales, página web, contenidos, metodologías, alianzas, actividades, talleres, eventos y estrategias comerciales propias. La relación con MAJESTOR no exige que abandones tu identidad, cambies el nombre de tu marca o uses permanentemente la identidad visual de la empresa: tu <strong>marca principal</strong> (personal o empresarial) y tu <strong>vinculación</strong> (participación como Partner) conviven de forma clara. Tú decides el nivel de visibilidad que le das a esta vinculación, siempre que la información sea verdadera.</p></details>
+
+      <details class="faq"><summary>Formas autorizadas de presentación <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Puedes usar expresiones como "Soy MAJESTOR PARTNER", "Hago parte del ecosistema MAJESTOR como Partner", "Miembro del ecosistema MAJESTOR PARTNER", "Desarrollo mi marca y mis proyectos como parte del ecosistema MAJESTOR", "Este producto está disponible en el e-commerce de MAJESTOR" (cuando esté publicado y activo), o "Participaré en MAJESTOR NETWORK" (cuando esté programado). Para una presentación breve: <strong>"MAJESTOR PARTNER"</strong>, o combinado como "[Nombre o profesión] | MAJESTOR PARTNER" o "Fundador(a) de [marca] | MAJESTOR PARTNER" — tu nombre y actividad deben conservar el protagonismo principal. Para una presentación ampliada: "Soy MAJESTOR PARTNER y hago parte de un ecosistema orientado a la formación, el fortalecimiento de marcas, la estructuración de productos, la generación de conexiones y el desarrollo de oportunidades. Desde este espacio continúo construyendo mi propia marca y mis proyectos con acompañamiento educativo, comercial y de marketing."</p></details>
+
+      <details class="faq"><summary>Usos que no requieren aprobación previa <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Puedes, sin pedir autorización cada vez: incluir "MAJESTOR PARTNER" en tu biografía, mencionar que haces parte del ecosistema, contar tu experiencia personal, compartir tus aprendizajes y avances, etiquetar a @somosmajestor, compartir publicaciones oficiales sin modificarlas, publicar fotografías de actividades abiertas en las que participaste, hablar de tu propia marca y productos, compartir el enlace de un producto tuyo publicado en el e-commerce, informar que participarás en una actividad confirmada, usar una pieza oficial entregada por MAJESTOR, mencionar beneficios reales recibidos, invitar a conocer los canales oficiales, y compartir contenidos educativos propios que no se presenten como oficiales.</p><p>MAJESTOR también podrá entregarte una pieza o distintivo oficial con la expresión "MAJESTOR PARTNER" para usar en biografías, perfiles y piezas propias sin solicitar autorización cada vez, siempre que no lo modifiques.</p></details>
+
+      <details class="faq"><summary>Comunicación de productos propios <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Tienes libertad para crear, presentar y comercializar tus propios productos dentro y fuera del ecosistema. Si está publicado en el e-commerce, puedes decir "Producto disponible en el e-commerce de MAJESTOR" o "Como MAJESTOR PARTNER, he incorporado este producto al e-commerce del ecosistema". No afirmes que fue creado, certificado o avalado por MAJESTOR, que garantiza resultados, o que forma parte de una alianza directa sin acuerdo escrito.</p></details>
+
+      <details class="faq"><summary>Actividades propias del Partner <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Puedes realizar actividades propias sin usar el nombre ni el logotipo de MAJESTOR: organizarlas bajo tu responsabilidad, con tu identidad visual, tus condiciones comerciales e invitados, sin presentarlas como actividad de MAJESTOR ni generar confusión sobre su participación. Si quieres incorporar la marca o solicitar acompañamiento institucional, sigue el proceso de revisión correspondiente.</p></details>
+
+      <details class="faq"><summary>Alianzas con otros Partners o Masters <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Cuando la actividad se realice únicamente bajo las marcas propias de los participantes, pueden organizarla con autonomía y bajo su responsabilidad. Cuando se use el nombre, logotipo, canales, recursos o acompañamiento de MAJESTOR, deben presentar la propuesta para revisión. Ser Master o Partner no implica que todas tus actividades sean automáticamente actividades de MAJESTOR.</p></details>
+
+      <details class="faq"><summary>Comunicación en redes sociales <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Puedes integrar tu vinculación a tu estrategia de contenido sin perder tu voz ni tu estilo: tu historia profesional, tu experiencia como Partner, aprendizajes, avances de marca, desarrollo de productos, participación en eventos y presentaciones, entrevistas, productos del e-commerce, colaboraciones y testimonios propios. No es necesario que todas tus publicaciones usen los colores, tipografías o estilo de MAJESTOR — el Manual de Marca aplica cuando uses directamente su identidad visual.</p></details>
+
+      <details class="faq"><summary>Opinión personal vs. comunicación oficial <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Puedes expresar opiniones, conocimientos y experiencias bajo tu propio nombre. En asuntos sensibles, aclara con frases como "Esta es una opinión personal" o "Este contenido pertenece a mi marca y no constituye una comunicación oficial de MAJESTOR". No respondas en nombre de la empresa asuntos jurídicos, financieros, contractuales, administrativos, institucionales o de reclamaciones — remítelos al área correspondiente.</p></details>
+
+      <details class="faq"><summary>Cuándo solo informar vs. cuándo pedir aprobación <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p><strong>Solo informa</strong> a tu grupo personalizado (sin proceso formal) cuando: te inviten a una entrevista donde mencionarás tu vinculación, participes como Partner en un espacio externo, recibas una propuesta de colaboración, identifiques una oportunidad para otros Partners, te contacte un medio, detectes un uso inadecuado de la marca, o surja una duda sobre tu relación con MAJESTOR.</p><p><strong>Necesitas aprobación previa</strong> cuando: presentes una actividad como oficial de MAJESTOR, uses el logotipo en un evento, producto o campaña, crees publicidad pagada con la marca, publiques precios o promociones de sus productos, hables en su representación, concedas una entrevista institucional, emitas un comunicado de prensa, propongas una alianza usando su nombre, crees diplomas o reconocimientos con el logotipo, uses la marca en material impreso, crees una página que pueda parecer oficial, organices un evento bajo su identidad, o solicites los canales oficiales para promocionar una actividad.</p></details>
+
+      <details class="faq"><summary>Comunicación de beneficios <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Puedes hablar de los beneficios que realmente forman parte de Majestor Partner: acompañamiento inicial, fortalecimiento de marca, estructuración de productos, orientación comercial, MAJESTOR NETWORK, formación grabada, oratoria, LUMIA, Mentoryx Advance, posicionamiento de 30 días, publicación en el e-commerce, espacios de visibilidad, el Directorio del Ecosistema, la Biblioteca de Herramientas, la posibilidad de proponer eventos, conexiones con otros Partners y Masters, reuniones de seguimiento, y espacios educativos y colaborativos — siempre respetando las condiciones, duración, requisitos y alcances de cada uno.</p></details>
+
+      <details class="faq"><summary>Afirmaciones que deben evitarse <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>No afirmes que MAJESTOR garantiza ventas, que la inversión se recuperará en un plazo determinado, que los resultados económicos están asegurados, que la empresa entregará clientes, que su equipo comercial venderá obligatoriamente tus productos, que cualquier actividad propia cuenta con respaldo institucional, que puedes negociar o modificar contratos o precios de la empresa, que tienes capacidad para comprometerla legalmente, que tus opiniones representan su posición oficial, o que eres su propietario, representante legal o vocero institucional.</p></details>
+
+      <details class="faq"><summary>Contacto con personas interesadas y presentación en eventos <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Si alguien te contacta para conocer MAJESTOR, puedes compartir información oficial, explicar tu experiencia, presentar los productos vigentes y compartir tu enlace personal — remite las preguntas técnicas a Soporte, las contractuales a Jurídico y las de pago al área correspondiente, sin crear condiciones o promesas no autorizadas. Al participar en una actividad autorizada, puedes ser presentado como: "[Nombre] es MAJESTOR PARTNER y cuenta con experiencia en [área]. Actualmente desarrolla [marca, producto o proyecto]" — la presentación debe destacar principalmente tu trayectoria, experiencia, marca y proyecto; la vinculación con MAJESTOR es un elemento de respaldo, no un reemplazo de tu identidad profesional.</p></details>
+
+      <details class="faq"><summary>Finalización de la vinculación <svg class="faq-plus" width="16" height="16" viewBox="0 0 24 24" class="icn"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></summary><p>Cuando finalice tu contrato, deja de presentarte como MAJESTOR PARTNER vigente. Puedes conservar referencias históricas verdaderas como "Fui MAJESTOR PARTNER durante [periodo]", solo cuando no genere confusión sobre una relación vigente ni implique autorización actual para usar el logotipo o representar a la empresa.</p></details>
+
+      <p class="note" style="margin-top:16px">Canales de orientación: Marketing (marketing@majestorpro.com) · Comercial (comercial@majestorpro.com) · Jurídico (juridico@majestorpro.com) · Soporte (soporte@majestorpro.com · WhatsApp +57 301 611 7467) · Redes oficiales: @somosmajestor.</p>
+    </section>
+
+    <!-- ================= COMISIONES ================= -->
+    <section class="panel" id="panel-comisiones">
+      <div class="head-row">
+        <div class="head-icon"><svg width="22" height="22" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M9 15 L15 9 M9.5 10 a.5 .5 0 1 0 0-1 a.5 .5 0 0 0 0 1 M14.5 15 a.5 .5 0 1 0 0-1 a.5 .5 0 0 0 0 1"/></svg></div>
+        <div><span class="eyebrow">CINCO FORMAS DE GENERAR INGRESOS</span><h2>Comisiones y pagos</h2></div>
+      </div>
+      <p class="lede">Referidos directos, venta de productos de MAJESTOR, productos propios en el e-commerce, productos en alianza directa, y eventos — cada modalidad tiene condiciones y porcentajes diferentes.</p>
+
+      <h3 class="section-h" style="margin-top:8px;"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><path d="M9 15 L15 9 M10 6 L13.5 6 a3 3 0 0 1 0 6 H12 M14 18 L10.5 18 a3 3 0 0 1 0 -6 H12"/></svg> Comisiones por ventas y referidos</h3>
+      <p>Cuando alguien se registra mediante tu enlace personal y adquiere un producto elegible, recibes la comisión correspondiente:</p>
+      <div class="stat-row">
+        <div class="stat-chip earn reveal"><span class="num">50%</span><span class="unit">Majestor Go</span></div>
+        <div class="stat-chip earn reveal" style="--d:40ms"><span class="num">20%</span><span class="unit">Pack Trascendencia</span></div>
+        <div class="stat-chip earn reveal" style="--d:80ms"><span class="num">20%</span><span class="unit">Majestor Partner (referido directo)</span></div>
+        <div class="stat-chip earn reveal" style="--d:120ms"><span class="num">20%</span><span class="unit">productos elegibles del e-commerce</span></div>
+      </div>
+      <p class="note">La comisión del 20 % por venta de Majestor Partner solo se reconoce cuando el comprador fue referido directamente mediante tu enlace.</p>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><rect x="4" y="8" width="16" height="11" rx="2"/><path d="M9 8 V6 a3 3 0 0 1 6 0 v2"/></svg> Utiliza tu enlace personal</h3>
+      <p>Está en tu backoffice. Cada persona debe registrarse directamente mediante tu enlace para que la plataforma te identifique como su auspiciador y vincule correctamente el registro, las ventas y las comisiones. Si se registra con el enlace de otra persona, la comisión no se cargará a tu cuenta.</p>
+
+      <div class="benefit-grid">
+        <div class="benefit"><h4>Productos propios en el e-commerce</h4><p>80 % para ti como creador, 20 % para MAJESTOR — distinto de una comisión por referir productos de MAJESTOR.</p></div>
+        <div class="benefit"><h4>Productos en alianza directa</h4><p>50 % / 50 % solo con acuerdo escrito, evaluado y formalizado — no se activa automáticamente.</p></div>
+      </div>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><rect x="4" y="5" width="16" height="15" rx="2"/><line x1="4" y1="9" x2="20" y2="9"/></svg> Eventos, talleres y conferencias</h3>
+      <p>Distribución: 80 % para el Partner o los organizadores, 20 % para MAJESTOR, calculado sobre la utilidad.</p>
+      <div class="field-hint" style="font-family:var(--display); font-weight:700; text-align:center; font-size:16px;">Ingresos − gastos demostrables = utilidad</div>
+      <p>Cuando participen varios Partners o Masters, acuerdan cómo distribuir el 80 %. La liquidación con MAJESTOR debe realizarse dentro de los cinco días hábiles siguientes al evento.</p>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M8 12.5 L11 15.5 L16 9"/></svg> Condiciones para generar una comisión</h3>
+      <ul>
+        <li>Debes encontrarte activo.</li>
+        <li>La persona debe haberse registrado mediante tu enlace, cuando corresponda.</li>
+        <li>La compra debe realizarse por un canal autorizado, con el pago confirmado.</li>
+        <li>El producto debe ser elegible y la operación no debe estar anulada.</li>
+      </ul>
+      <p class="note">El registro de una persona no genera por sí solo una comisión — debe existir una compra efectiva y elegible.</p>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg> Consulta en el backoffice</h3>
+      <p>Desde tu Oficina Virtual puedes consultar personas registradas, ventas, producto vendido, comisión generada, estado de la operación, saldo disponible e historial de movimientos. Si una venta no aparece, verifica que la persona usó tu enlace, que el pago fue confirmado, que el producto fue activado, y que no existe una devolución, reverso o contracargo.</p>
+
+      <div class="stat-row">
+        <div class="stat-chip earn reveal"><span class="num">USD 30</span><span class="unit">saldo mínimo para solicitar pago</span></div>
+      </div>
+      <p>Solicitudes los <strong>martes</strong> mediante el backoffice; pagos procesados los <strong>viernes</strong>, tras revisión y validación. Debes estar activo — las ventas generadas mientras estés inactivo no suman comisión. Las ventas, saldos y comisiones se gestionan en dólares estadounidenses; el valor recibido en otra moneda puede variar por conversión, tasa bancaria y cargos de transferencia, que MAJESTOR no controla.</p>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><line x1="8" y1="8" x2="16" y2="16"/><line x1="16" y1="8" x2="8" y2="16"/></svg> Devoluciones, reversos y contracargos</h3>
+      <p>Una comisión se consolida cuando la venta es válida y no existe devolución, reverso, contracargo o reclamación procedente. Si una comisión ya pagada es luego devuelta, el valor puede descontarse del saldo disponible, compensarse con comisiones futuras, o solicitarse al responsable.</p>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><path d="M12 2 L14.5 9 L22 9 L16 13.5 L18 21 L12 16.5 L6 21 L8 13.5 L2 9 L9.5 9 Z"/></svg> Diferencias importantes — no se mezclan</h3>
+      <div class="benefit-grid">
+        <div class="benefit"><h4>Comisión por referido</h4><p>Se genera cuando alguien vinculado mediante tu enlace adquiere un producto elegible.</p></div>
+        <div class="benefit"><h4>Producto propio en el e-commerce</h4><p>Corresponde a tu participación como creador de un producto publicado.</p></div>
+        <div class="benefit"><h4>Alianza directa</h4><p>Surge mediante un acuerdo escrito específico entre MAJESTOR y tú.</p></div>
+        <div class="benefit"><h4>Evento</h4><p>Se calcula sobre la utilidad, después de descontar gastos demostrables.</p></div>
+      </div>
+      <p class="note">Una misma venta no genera automáticamente varios porcentajes, salvo condición expresamente establecida.</p>
+
+      <div class="not-included">
+        <h4><svg width="16" height="16" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><line x1="8" y1="8" x2="16" y2="16"/><line x1="16" y1="8" x2="8" y2="16"/></svg> No existen ingresos garantizados</h4>
+        <p style="margin-bottom:0">Los ingresos dependen de tu gestión, actividad comercial, seguimiento, capacidad de convocatoria, calidad de tus productos, condiciones del mercado y cumplimiento de los procesos. MAJESTOR no garantiza ventas, clientes, recuperación de la inversión ni un nivel específico de ingresos.</p>
+      </div>
+      <p class="note">Dudas sobre pagos y liquidaciones: <a href="mailto:financiero@majestorpro.com">financiero@majestorpro.com</a> · Orientación comercial: <a href="mailto:comercial@majestorpro.com">comercial@majestorpro.com</a></p>
+    </section>
+
+    <!-- ================= COMUNIDAD ================= -->
+    <section class="panel" id="panel-comunidad">
+      <div class="head-row">
+        <div class="head-icon"><svg width="22" height="22" viewBox="0 0 24 24" class="icn"><path d="M4 5 H20 V16 H9 L5 20 V16 H4 Z"/></svg></div>
+        <div><span class="eyebrow">MANTENTE CONECTADO</span><h2>Comunidad y soporte</h2></div>
+      </div>
+      <p class="lede">Utiliza siempre los canales oficiales de MAJESTOR para recibir información confiable.</p>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><path d="M4 5 H20 V16 H9 L5 20 V16 H4 Z"/></svg> Tus grupos de WhatsApp</h3>
+      <div class="group-row">
+        <strong>Club Oficial de MAJESTOR</strong>
+        <a href="https://chat.whatsapp.com/GRKbXM9ECO2K1Oj2NVbm0T?mode=gi_t" target="_blank" rel="noopener">Ingresar al grupo →</a>
+      </div>
+      <div class="group-row">
+        <strong>Mentalidad MAJESTOR</strong>
+        <a href="https://chat.whatsapp.com/HobFBq5c4lgGFql47D6igZ?mode=gi_t" target="_blank" rel="noopener">Ingresar al grupo →</a>
+      </div>
+      <p class="note">Además de estos dos grupos oficiales, tendrás tu <strong>grupo personalizado de acompañamiento</strong>, creado individualmente por tu equipo — ahí coordinas reuniones, entregables y avances con Comercial, Educación, Marketing y las demás áreas de tu proceso. No reemplaza los canales formales de Soporte, Financiero, Marketing o Jurídico.</p>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><rect x="4" y="4" width="16" height="16" rx="3"/></svg> Directorio de contacto</h3>
+      <div class="directory">
+        <div class="contact-card reveal">
+          <div class="benefit-icon"><svg width="16" height="16" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M12 8 v4 l3 2"/></svg></div>
+          <h4>Soporte</h4><p>Activación, accesos e inconvenientes técnicos o administrativos.</p>
+          <a href="https://wa.me/573016117467" target="_blank" rel="noopener">WhatsApp +57 301 611 7467</a>
+          <a href="mailto:soporte@majestorpro.com">soporte@majestorpro.com</a>
+        </div>
+        <div class="contact-card reveal" style="--d:40ms">
+          <div class="benefit-icon"><svg width="16" height="16" viewBox="0 0 24 24" class="icn"><path d="M9 15 L15 9 M9.5 10 a.5 .5 0 1 0 0-1 a.5 .5 0 0 0 0 1 M14.5 15 a.5 .5 0 1 0 0-1 a.5 .5 0 0 0 0 1"/></svg></div>
+          <h4>Comercial</h4><p>Eventos, orientación comercial y postulaciones.</p>
+          <a href="mailto:comercial@majestorpro.com">comercial@majestorpro.com</a>
+        </div>
+        <div class="contact-card reveal" style="--d:80ms">
+          <div class="benefit-icon"><svg width="16" height="16" viewBox="0 0 24 24" class="icn"><path d="M4 6 H16 V17 H4 Z"/><path d="M8 6 V3 H20 V14 H16"/></svg></div>
+          <h4>Educación</h4><p>Formación, contenidos y estructuración de producto.</p>
+          <a href="mailto:educacion@majestorpro.com">educacion@majestorpro.com</a>
+        </div>
+        <div class="contact-card reveal" style="--d:120ms">
+          <div class="benefit-icon"><svg width="16" height="16" viewBox="0 0 24 24" class="icn"><path d="M12 16 V4 M7 9 L12 4 L17 9"/><path d="M4 16 v3 a1 1 0 0 0 1 1 h14 a1 1 0 0 0 1 -1 v-3"/></svg></div>
+          <h4>Marketing</h4><p>Diagnóstico de marca, piezas y uso del logotipo.</p>
+          <a href="mailto:marketing@majestorpro.com">marketing@majestorpro.com</a>
+        </div>
+        <div class="contact-card reveal" style="--d:160ms">
+          <div class="benefit-icon"><svg width="16" height="16" viewBox="0 0 24 24" class="icn"><path d="M12 3 L4 7 V12 C4 17 7.5 20.5 12 22 C16.5 20.5 20 17 20 12 V7 Z"/></svg></div>
+          <h4>Jurídico</h4><p>Autorizaciones, contratos y consultas legales.</p>
+          <a href="mailto:juridico@majestorpro.com">juridico@majestorpro.com</a>
+        </div>
+        <div class="contact-card reveal" style="--d:200ms">
+          <div class="benefit-icon"><svg width="16" height="16" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="8"/><path d="M12 7 v10 M9.5 9.5 h3.2 a1.8 1.8 0 0 1 0 3.6 H9.8 a1.8 1.8 0 0 0 0 3.6 h3.7"/></svg></div>
+          <h4>Financiero</h4><p>Pagos, comisiones y liquidaciones.</p>
+          <a href="mailto:financiero@majestorpro.com">financiero@majestorpro.com</a>
+        </div>
+        <div class="contact-card reveal" style="--d:240ms">
+          <div class="benefit-icon"><svg width="16" height="16" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="7.5" r="3.2"/><path d="M5.5 20 c0-4.2 3-6.8 6.5-6.8 s6.5 2.6 6.5 6.8"/></svg></div>
+          <h4>LUMIA</h4><p>Inscripción y programación de tus dos beneficiarios.</p>
+          <a href="mailto:lumiakids@majestorpro.com">lumiakids@majestorpro.com</a>
+        </div>
+        <div class="contact-card reveal" style="--d:280ms">
+          <div class="benefit-icon"><svg width="16" height="16" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M12 7 a5 5 0 0 0 0 10 c1.5 0 2-1 2-2 M8 12 h8"/></svg></div>
+          <h4>Redes oficiales</h4><p>Instagram, Facebook y YouTube: @somosmajestor</p>
+          <a href="https://majestorpro.com" target="_blank" rel="noopener">majestorpro.com</a>
+        </div>
+      </div>
+
+      <h3 class="section-h"><svg class="mini-icn" width="18" height="18" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M12 7 V12 L15.5 14"/></svg> Cuéntanos tu experiencia</h3>
+      <div class="group-row">
+        <strong>Encuesta de experiencia</strong>
+        <a href="#ENLACE-GOOGLE-FORM-ENCUESTA" target="_blank" rel="noopener">Responder encuesta →</a>
+      </div>
+      <p class="note">La compartimos en distintas etapas: al finalizar tus primeros 30 días, durante el seguimiento del primer año, en el seguimiento anual y al finalizar tu vigencia. <em>(Enlace pendiente de agregar.)</em></p>
+    </section>
+
+    <!-- ================= CHECKLIST ================= -->
+    <section class="panel" id="panel-checklist">
+      <div class="head-row">
+        <div class="head-icon"><svg width="22" height="22" viewBox="0 0 24 24" class="icn"><rect x="3.5" y="4" width="17" height="16" rx="2"/><path d="M7 9 L9 11 L13 7"/><line x1="7" y1="15" x2="17" y2="15"/></svg></div>
+        <div><span class="eyebrow">RECONOCE QUÉ YA ACTIVASTE</span><h2>Lista general de verificación</h2></div>
+      </div>
+      <p class="lede">Marca cada casilla a medida que avances. No necesitas hacerlo todo el mismo día.</p>
+
+      <div class="progress-wrap">
+        <div class="progress-top"><span>Progreso general</span><span><span id="progress-count">0</span> / <span id="progress-total">0</span> completado</span></div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      </div>
+
+      <div class="check-group-head"><div class="benefit-icon"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10 V7 a4 4 0 0 1 8 0 v3"/></svg></div><h3>Accesos iniciales</h3></div>
+      <label class="check-item"><input type="checkbox"><span>Confirmé que MAJESTOR PARTNER aparece activo.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Ingresé a mi backoffice.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Identifiqué mi ID de registro.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Encontré el código de acceso a MAJESTOR NETWORK.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Ingresé al grupo oficial de MAJESTOR y a Mentalidad MAJESTOR.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Fui incorporado a mi grupo personalizado.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Conocí al equipo que acompañará mi proceso.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Revisé mi contrato y los documentos principales.</span></label>
+
+      <div class="check-group-head"><div class="benefit-icon"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><path d="M6 12 a6 6 0 0 1 12 0"/><path d="M3 12 a9 9 0 0 1 18 0"/></svg></div><h3>Formación</h3></div>
+      <label class="check-item"><input type="checkbox"><span>Ingresé a MAJESTOR NETWORK.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Conocí la plataforma de clases grabadas.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Comencé el proceso formativo de oratoria.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Conocí los beneficios educativos disponibles.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Solicité orientación cuando tuve dificultades de acceso.</span></label>
+
+      <div class="check-group-head"><div class="benefit-icon"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><path d="M9 15 L15 9 M9.5 10 a.5 .5 0 1 0 0-1 a.5 .5 0 0 0 0 1"/></svg></div><h3>Ruta inicial de 30 días</h3></div>
+      <label class="check-item"><input type="checkbox"><span>Compartí la información de mi marca y mis redes.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Participé en la revisión de marca y Marketing.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Recibí mi diagnóstico y plan de acción.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Seleccioné un producto o proyecto principal.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Participé en su revisión educativa.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Organicé su estructura, metodología y entregables.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Identifiqué mi cliente ideal.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Revisé el precio del producto.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Construí el mensaje comercial.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Definí los canales para comunicarlo.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Organicé mis contactos y posibles actividades.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Socialicé el producto con el equipo y realicé los ajustes recomendados.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Preparé su ruta de lanzamiento.</span></label>
+
+      <div class="check-group-head"><div class="benefit-icon"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><path d="M12 3 L12 8"/><path d="M7 21 L9 9 H15 L17 21 Z"/><ellipse cx="12" cy="21" rx="5" ry="1.4"/></svg></div><h3>Mentoryx Advance</h3></div>
+      <label class="check-item"><input type="checkbox"><span>Confirmé la activación del beneficio.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Organicé la información de mi perfil.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Realicé el registro mediante el enlace correspondiente.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Completé mi perfil profesional.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Solicité la revisión general y realicé los ajustes necesarios.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Confirmé el inicio de los 30 días de posicionamiento.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Conozco la vigencia anual de Mentoryx Advance.</span></label>
+
+      <div class="check-group-head"><div class="benefit-icon"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><path d="M6 8 H18 L17 20 H7 Z"/><path d="M9 8 V6 a3 3 0 0 1 6 0 v2"/></svg></div><h3>E-commerce</h3></div>
+      <label class="check-item"><input type="checkbox"><span>Leí "Vende en tu e-commerce".</span></label>
+      <label class="check-item"><input type="checkbox"><span>Definí el problema que atiende mi producto, el público y el resultado esperado.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Organicé el contenido y los entregables.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Preparé la descripción, precio y materiales.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Completé el formulario del e-commerce.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Atendí las observaciones recibidas.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Confirmé la publicación de mi producto.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Comprendí que puedo presentar otros productos adicionales.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Comprendí la distribución: 80 % para mí como creador y 20 % para MAJESTOR.</span></label>
+
+      <div class="check-group-head"><div class="benefit-icon"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><path d="M12 3 L4 7 V12 C4 17 7.5 20.5 12 22 C16.5 20.5 20 17 20 12 V7 Z"/></svg></div><h3>Marca y comunicación</h3></div>
+      <label class="check-item"><input type="checkbox"><span>Leí el Manual de Marca y conocí las versiones oficiales del logotipo.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Comprendí cómo presentarme como MAJESTOR PARTNER.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Diferencié mi marca de la identidad de MAJESTOR.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Uso correctamente el nombre y los recursos oficiales.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Sé qué comunicaciones puedo realizar con autonomía y cuáles deben informarse.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Evito prometer ventas, clientes o ingresos garantizados.</span></label>
+
+      <div class="check-group-head"><div class="benefit-icon"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><rect x="4" y="4" width="16" height="16" rx="3"/></svg></div><h3>Visibilidad y conexiones</h3></div>
+      <label class="check-item"><input type="checkbox"><span>Conocí el Directorio del Ecosistema MAJESTOR y entregué mis datos.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Conocí la Biblioteca de Herramientas Partner.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Identifiqué los espacios de entrevistas y lives.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Conocí la Semana de Visibilidad Partner.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Identifiqué oportunidades de participación en MAJESTOR NETWORK.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Comencé a conectar con otros Partners, Masters y líderes.</span></label>
+
+      <div class="check-group-head"><div class="benefit-icon"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><rect x="4" y="5" width="16" height="15" rx="2"/><line x1="4" y1="9" x2="20" y2="9"/></svg></div><h3>Eventos y actividades</h3></div>
+      <label class="check-item"><input type="checkbox"><span>Definí una primera idea de evento o actividad.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Elegí si lo realizaré individualmente o en alianza.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Compartí la idea con Comercial cuando corresponde.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Definí público, formato y fecha aproximada.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Organicé los gastos y responsabilidades principales.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Comprendí la distribución: 80 % organizadores y 20 % MAJESTOR sobre la utilidad.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Conozco el formato breve para reportar el evento.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Definí mi compromiso mínimo de actividades por año.</span></label>
+
+      <div class="check-group-head"><div class="benefit-icon"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M9 15 L15 9"/></svg></div><h3>Comisiones y pagos</h3></div>
+      <label class="check-item"><input type="checkbox"><span>Localicé mi enlace personal y sé cómo compartirlo.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Comprendí los porcentajes de cada producto.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Sé consultar mis ventas y comisiones.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Comprendí que debo estar activo para generar y solicitar comisiones.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Conozco el monto mínimo de USD 30.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Sé que las solicitudes son los martes y los pagos los viernes.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Comprendí cómo afectan las devoluciones, reversos y contracargos.</span></label>
+
+      <div class="check-group-head"><div class="benefit-icon"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="9"/><path d="M12 7 V12 L15.5 14"/></svg></div><h3>Seguimiento</h3></div>
+      <label class="check-item"><input type="checkbox"><span>Definí mis objetivos de crecimiento y conozco las metas orientativas.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Organicé el registro de mis avances.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Conozco las reuniones mensuales de seguimiento.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Identifiqué las acciones que ejecutaré en los próximos meses.</span></label>
+      <label class="check-item"><input type="checkbox"><span>Comprendí que la renovación no es automática.</span></label>
+
+      <div class="check-group-head"><div class="benefit-icon"><svg width="15" height="15" viewBox="0 0 24 24" class="icn"><path d="M12 2 L14.5 9 L22 9 L16 13.5 L18 21 L12 16.5 L6 21 L8 13.5 L2 9 L9.5 9 Z"/></svg></div><h3>Mi siguiente paso</h3></div>
+      <div class="field-hint">La acción principal que realizaré ahora es: ____________________</div>
+      <div class="field-hint" style="margin-top:8px">Fecha prevista: ____________________ &nbsp;·&nbsp; Apoyo que necesito: ____________________</div>
+      <div class="field-hint" style="margin-top:8px">Persona o área con la que debo comunicarme: ____________________</div>
+
+      <p class="note" style="margin-top:20px">Esta casilla se guarda solo en esta sesión de tu navegador. ¿Ayuda? WhatsApp +57 301 611 7467 · soporte@majestorpro.com</p>
+    </section>
+  </main>
+</div>
+
+<script>
+  const navlinks = document.querySelectorAll('.navlink');
+  const panels = document.querySelectorAll('.panel');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const menuToggle = document.getElementById('menuToggle');
+
+  navlinks.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-target');
+      navlinks.forEach(b => b.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('panel-' + target).classList.add('active');
+      window.scrollTo({top:0, behavior:'instant'});
+      closeMobileMenu();
+      requestAnimationFrame(initReveal);
+    });
+  });
+
+  function openMobileMenu(){ sidebar.classList.add('open'); overlay.classList.add('show'); }
+  function closeMobileMenu(){ sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+  menuToggle.addEventListener('click', () => { sidebar.classList.contains('open') ? closeMobileMenu() : openMobileMenu(); });
+  overlay.addEventListener('click', closeMobileMenu);
+
+  // Checklist progress
+  const checkboxes = document.querySelectorAll('.check-item input[type="checkbox"]');
+  const countEl = document.getElementById('progress-count');
+  const totalEl = document.getElementById('progress-total');
+  const fillEl = document.getElementById('progress-fill');
+  function updateProgress(){
+    const total = checkboxes.length;
+    const checked = document.querySelectorAll('.check-item input[type="checkbox"]:checked').length;
+    countEl.textContent = checked; totalEl.textContent = total;
+    fillEl.style.width = (total ? (checked/total*100) : 0) + '%';
+  }
+  checkboxes.forEach(cb => cb.addEventListener('change', updateProgress));
+  updateProgress();
+
+  // Scroll reveal
+  let io;
+  function initReveal(){
+    if(io) io.disconnect();
+    io = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.15, rootMargin:'0px 0px -30px 0px'});
+    document.querySelectorAll('.panel.active .reveal:not(.in-view)').forEach(el=>io.observe(el));
+  }
+  initReveal();
+
+  // Smooth, elegant expand/collapse for steps and FAQ accordions
+  function setupAnimatedDetails(selector){
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll(selector).forEach(details => {
+      const summary = details.querySelector('summary');
+      const content = summary ? summary.nextElementSibling : null;
+      if(!summary || !content) return;
+      let anim = null, isClosing = false, isExpanding = false;
+
+      summary.addEventListener('click', (e) => {
+        e.preventDefault();
+        details.style.overflow = 'hidden';
+        if (isClosing || !details.open) {
+          openPanel();
+        } else if (isExpanding || details.open) {
+          shrinkPanel();
+        }
+      });
+
+      function shrinkPanel(){
+        isClosing = true;
+        const startH = details.offsetHeight + 'px';
+        const endH = summary.offsetHeight + 'px';
+        if (anim) anim.cancel();
+        anim = details.animate({height:[startH, endH]}, {duration:220, easing:'cubic-bezier(0.77,0,0.175,1)'});
+        anim.onfinish = () => finish(false);
+        anim.oncancel = () => { isClosing = false; };
+      }
+      function openPanel(){
+        details.style.height = details.offsetHeight + 'px';
+        details.open = true;
+        requestAnimationFrame(() => expandPanel());
+      }
+      function expandPanel(){
+        isExpanding = true;
+        const startH = details.offsetHeight + 'px';
+        const endH = (summary.offsetHeight + content.offsetHeight) + 'px';
+        if (anim) anim.cancel();
+        anim = details.animate({height:[startH, endH]}, {duration:280, easing:'cubic-bezier(0.23,1,0.32,1)'});
+        anim.onfinish = () => finish(true);
+        anim.oncancel = () => { isExpanding = false; };
+      }
+      function finish(isOpen){
+        details.open = isOpen;
+        anim = null; isClosing = false; isExpanding = false;
+        details.style.height = '';
+        details.style.overflow = '';
+      }
+    });
+  }
+  setupAnimatedDetails('.step');
+  setupAnimatedDetails('.faq');
+</script>
+
+</body>
+</html>
